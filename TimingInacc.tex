@@ -1,0 +1,84 @@
+\documentclass[a4paper,10pt]{article}
+
+\usepackage[T1]{fontenc}
+
+\title{Timing Inaccuracy in MSPSim Emulator: Consequences on COOJA Simulations}
+\author{
+K\'evin Roussel, Ye-Qiong Song and Olivier Zendra\\
+LORIA/INRIA Nancy Grand-Est,\\
+             Universit\'e de Lorraine,\\
+             615, rue du Jardin Botanique,\\
+             54600 Villers-L\`es-Nancy, France\\
+\texttt{\{Kevin.Roussel,Ye-Qiong.Song,Olivier.Zendra\}@inria.fr}
+}
+\date{}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%                               80 COLONNES                                %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+\maketitle
+
+\abstract{
+Xxx
+}
+
+\section{COOJA and MSPSim}
+
+Provided by the Contiki OS project~\cite{ContikiOS}, the COOJA network
+simulator~\cite{Cooja} has become a widely used tool in the domain of
+Wireless Sensor Networks (WSN). The research community especially uses
+it extensively to perform simulations of small to relatively large wireless
+networks of connected devices embedding sensors and/or actuators, commonly
+named \emph{``motes''}, and thus to develop, debug and evaluate projects
+based in the WSN technology.
+
+COOJA itself is a Java-based application, providing three main features:
+\begin{enumerate}
+\item a graphical user interface (GUI, based on Java's standard Swing toolkit)
+to design, run, and analyze WSN simulations;
+\item simulation of the radio medium underlying the wireless communications
+of sensor networks;
+\item an extensible framework, which allows integration of external tools
+to provide additional features to the COOJA application.
+\end{enumerate}
+This last feature is used to allow COOJA to actually emulate the various
+motes constituting the WSNs. It indeed embeds and uses dedicated emulator
+programs that perform cycle-exact emulation of the chips with which motes
+are built: microcontroller units (MCUs), radio transceivers, etc.
+
+This emulation mechanism is one of the main strong points of COOJA:
+thanks to it, very fine-grained, precise and low-level simulations
+can be performed; this is why COOJA has become a tool of choice especially
+for debugging and evaluating WSN-related software (which happens to be
+often based on Contiki OS).
+
+Current versions of COOJA make use of two different emulator software
+packages: Avrora for emulation of Atmel AVR-based devices, and
+MSPSim~\cite{MSPSim} for emulation of TI MSP430-based devices.
+
+Of these two emulators, MSPSim is currently the most used in literature
+including COOJA-based simulations, since motes based on MSP430 MCUs are
+more commonly distributed and used: we can especially think to the pervasive
+TelosB/SkyMote family, or to Zolertia's Z1 platform.
+
+\section{Timing Inaccuracy Problem in MSPSim}
+
+
+
+\section{Consequences}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\vfill
+\bibliographystyle{unsrt}
+{\small
+\bibliography{TimingInacc}}
+
+\end{document}
