@@ -6,9 +6,9 @@
 \author{
 K\'evin Roussel, Ye-Qiong Song and Olivier Zendra\\
 LORIA/INRIA Nancy Grand-Est,\\
-             Universit\'e de Lorraine,\\
-             615, rue du Jardin Botanique,\\
-             54600 Villers-L\`es-Nancy, France\\
+Universit\'e de Lorraine,\\
+615, rue du Jardin Botanique,\\
+54600 Villers-L\`es-Nancy, France\\
 \texttt{\{Kevin.Roussel,Ye-Qiong.Song,Olivier.Zendra\}@inria.fr}
 }
 \date{}
@@ -85,17 +85,18 @@ into the transmission (TX) buffer of the emulated radio transceiver.
 MSPSim, when emulating the CC2420 transceiver, performs TX buffer loading
 much more slowly than the physical CC2420 chip actually does.
 
-A simple example program, which only role is to load a huge packet
+A simple example program, which only role is to load a huge data packet
 (110 bytes, that is: near the maximum size for IEEE
-802.15.4\footnotemark[1] data packets) compiled for and run on
+802.15.4\footnotemark[1] data packets), compiled for and run on
 Zolertia Z1 hardware platform, clearly shows this timing difference.
 The results of the comparison between execution on a simulted Z1 mote
-in COOJA/MSPSim and on physical Z1 hardware is shown in Table
-\ref{TblTXPktLoadDelays} hereafter.
+in COOJA/MSPSim and on physical Z1 hardware is shown in
+Table~\ref{TblTXPktLoadDelays} hereafter.
 
 \footnotetext[1]{IEEE 802.15.4 is the standard defining the physical
-(PHY) layer that the involved CC2420 radio transceiver---as well as
-many others---communicates on.}
+layer (PHY) that the involved CC2420 radio transceiver---as well as
+many others---communicates on. The absolute maximum size for IEEE
+802.15.4 data packets is 127 8-bit bytes.}
 
 \begin{table}[!h]
 \centering
@@ -109,16 +110,37 @@ Contiki OS / Fast SPI Write   &   14 ticks   &   7 ticks \\
 \hline
 \end{tabular}
 \caption{\small Delays observed for loading packets into CC2420 TX buffer,
-using various software platforms and implementations.\\
-Values are given in ``ticks'' of \texttt{rtimer/hwtimer}, both of these
-timers incrementing at a rate of 32,768~Hz. The unit is thus a fixed period
-of time equal to about 30.5 microseconds.}
+using various software platforms and implementations.}
 \label{TblTXPktLoadDelays}
 \end{table}
 
-We thus see that the inaccuracy in timing for the TX buffer loading operation
-is very important: simulated loading delay is 2 to 3 times larger than
-actual delay on hardware!
+In Table~\ref{TblTXPktLoadDelays}, delay values are given in ``ticks'' of
+\texttt{rtimer/hwtimer}, both of these timers incrementing at a rate of
+32,768~Hz. The unit is thus a fixed period of time equal to about
+30.5~microseconds.
+
+These values are given for different operating systems---the well-known
+Contiki already cited, as well as the new and efficient RIOT OS~\cite{RIOT},
+which is also specialized in WSN---as well as for two kind of SPI drivers:
+\begin{itemize}
+\item a standard SPI driver, which waits for every transmitted byte to be
+validated by the hardware SPI interface before sending the next one:
+we also this the ``safe'' SPI access model, since it allows to detect
+any problem that can occur during transmission on the SPU bus;
+\item a so-called ``fast write'' SPI model, where a byte is written to
+the bus every time the SPI hardware TX register is empty, without waiting
+for the validation signals for the previous byte to be written: this is
+the SPI write method used by the Contiki OS. While this allows for faster
+writes on the SPI bus, it makes transfers---at least in theory---less
+reliable. (Note however that while this method dramatically accelerates
+SPI transmissions to the radio transceiver, it doesn't make the timing
+differences observed between simulations and hardware runs disappear.)
+\end{itemize}
+
+We thus see that whatever the software environment used, the inaccuracy
+in timing for the TX buffer loading operation is very important:
+the simulated loading delay is always 2 to 3 times larger than
+the actual delay on hardware!
 
 Such a difference can be expected to have serious consequences on
 the validity of evaluations made with COOJA simulations, more precisely
@@ -133,6 +155,11 @@ on time and performance evaluations.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\section{Conclusion}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \vfill
 \bibliographystyle{unsrt}
