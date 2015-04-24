@@ -150,13 +150,46 @@ on time and performance evaluations.
 
 \section{Consequences}
 
+We looked in recent literature, and found many recent articles (that is:
+published in year 2014 or later) using COOJA simulations to evaluate
+time-related performance of WSN projects. Among them, we can cite
+the following:
+\begin{itemize}
+\item ...
+\end{itemize}
 
+Such studies, which rely on COOJA/MSPSim emulation runs to evaluate
+time-related performance on WSN, have an high risk of suffering from
+inexact results due to the inaccuracy describe hereabove, thus
+possibly invalidating their discussions and conclusions.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Conclusion}
 
+Until a fix is made and published to correct this timing inaccuracy
+in the MSPSim emulator, we believe the only way to get robust and reliable
+results concerning timing and time-related performance evaluation is
+to perform tests on actual hardware, which will eliminate any bias
+that could be introduced by errors or inaccuracies in emulator software.
+
+Of course, such hardware tests are much more difficult, long and
+costly to prepare, run and analyze. That's why fixing the problem
+we describe in the present paper should be done as soon as possible.
+
+Our study has shown that many published articles in the domain of WSNs,
+including very recent and current publications, rely on the COOJA/MSPSim
+simulation framework to demonstrate the validity and evaluate the
+performances of research projects. The validity of such publications
+is clearly put in jeopardy by the problem we describe here, especially
+when time-related results obtained by simulation are involved.
+
+It is also however, a testimony of the usefulness of the COOJA/MSPSim
+software package. Note also that while this problem impairs its use
+as a performance evaluation tool, it does not affect its other applications,
+like the ability to develop and debug WSN-related software much more easily
+thanks to its emulation features.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
