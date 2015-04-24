@@ -85,7 +85,7 @@ into the transmission (TX) buffer of the emulated radio transceiver.
 MSPSim, when emulating the CC2420 transceiver, performs TX buffer loading
 much more slowly than the physical CC2420 chip actually does.
 
-A simple example program, which only role is to load a huge data packet
+A simple example program, which only role is to load data packets
 (110 bytes, that is: near the maximum size for IEEE
 802.15.4\footnotemark[1] data packets), compiled for and run on
 Zolertia Z1 hardware platform, clearly shows this timing difference.
@@ -120,7 +120,7 @@ In Table~\ref{TblTXPktLoadDelays}, delay values are given in ``ticks'' of
 30.5~microseconds.
 
 These values are given for different operating systems---the well-known
-Contiki already cited, as well as the new and efficient RIOT OS~\cite{RIOT},
+Contiki already cited, as well as the very recent RIOT OS~\cite{RIOT},
 which is also specialized in WSN---as well as for two kind of SPI drivers:
 \begin{itemize}
 \item a standard SPI driver, which waits for every transmitted byte to be
@@ -159,7 +159,7 @@ the following:
 \end{itemize}
 
 Such studies, which rely on COOJA/MSPSim emulation runs to evaluate
-time-related performance on WSN, have an high risk of suffering from
+time-related performance on WSN, have a high risk of suffering from
 inexact results due to the inaccuracy describe hereabove, thus
 possibly invalidating their discussions and conclusions.
 
@@ -178,12 +178,12 @@ Of course, such hardware tests are much more difficult, long and
 costly to prepare, run and analyze. That's why fixing the problem
 we describe in the present paper should be done as soon as possible.
 
-Our study has shown that many published articles in the domain of WSNs,
-including very recent and current publications, rely on the COOJA/MSPSim
-simulation framework to demonstrate the validity and evaluate the
-performances of research projects. The validity of such publications
-is clearly put in jeopardy by the problem we describe here, especially
-when time-related results obtained by simulation are involved.
+Many published articles in the domain of WSNs, including very recent
+and current publications, rely on the COOJA/MSPSim simulation framework
+to demonstrate the validity and evaluate the performances of research
+projects. The validity of such publications is clearly put in jeopardy
+by the problem we describe here, especially when time-related results
+obtained by simulation are involved.
 
 It is also however, a testimony of the usefulness of the COOJA/MSPSim
 software package. Note also that while this problem impairs its use
