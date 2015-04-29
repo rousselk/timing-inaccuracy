@@ -25,7 +25,38 @@ Universit\'e de Lorraine,\\
 \hyphenation{MSP-Sim}
 
 \abstract{
-Xxx
+Simulation/emulation software frameworks are very useful tools: they provide
+easy development and debugging environment, especially for hardly available
+and/or debuggable platforms, like embedded devices. When they are based on
+fine-grained simulation, such tools can also allow for easy performance
+evaluation.
+
+Such a tool is the COOJA network simulator, developed and published by the
+Contiki OS project. Since it is based on the MSPSim emulator, it offers
+very fine-grained (i.e.: cycle-exact) simulation on Wireless Sensor Network
+motes. The use of simulations is especially useful for performing virtual
+runs on large sensor networks, comprising a large number of motes that would
+be difficult and costly to operate with actual hardware. Consequently,
+it is now a widely used tool, whose simulations are frequently seen and used
+in scientific literature as a mean to evaluate and validate research projects,
+like protocols for high-level layers of WSN network stacks.
+
+When performing our own simulations, we constated timing inconsistencies with
+identical experimentations made on actual hardware. Such inaccuracies clearly
+impair the use of the COOJA/MSPSim framework as an evaluation tool, at least
+for time-related results. We thus investigated the issue, to evaluate the
+extent of the problem.
+
+In the following paper, after a brief reminder about COOJA/MSPSim,
+our contributions will firstly consist in a detailed description of this
+timing inaccuracy problem, using an extensive set of comparisons between
+simulations and experimentations on hardware; we will then use these results
+to provide clues about the origin of this issue, and possibly way to fix or
+avoid it; then we will see its consequences on current WSN literature,
+in terms of robustness and reliability of the articles relying on
+such simulations.
+Finally, we will draw some conclusions from all of these contributions
+as an end to the present article.
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -400,7 +431,7 @@ conclusions of these papers in jeopardy.
 
 \section{Conclusion}
 
-In the present article:
+In the present article, we provided the following contributions:
 \begin{itemize}
 \item we clearly showed that MSPSim emulation suffers from a serious timing
 inaccuracy issue concerning SPI bus access, which impacts especially
@@ -442,7 +473,7 @@ thanks to its emulation features.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\vfill
+%\vfill
 \bibliographystyle{unsrt}
 {\small
 \bibliography{TimingInacc}}
