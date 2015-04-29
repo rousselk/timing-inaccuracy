@@ -9,7 +9,7 @@ K\'evin Roussel, Ye-Qiong Song and Olivier Zendra\\
 LORIA/INRIA Nancy Grand-Est,\\
 Universit\'e de Lorraine,\\
 615, rue du Jardin Botanique,\\
-54600 Villers-L\`es-Nancy, France\\
+54600 Villers-l\`es-Nancy, France\\
 \texttt{\{Kevin.Roussel,Ye-Qiong.Song,Olivier.Zendra\}@inria.fr}
 }
 \date{}
@@ -21,6 +21,8 @@ Universit\'e de Lorraine,\\
 \begin{document}
 
 \maketitle
+
+\hyphenation{MSP-Sim}
 
 \abstract{
 Xxx
@@ -69,7 +71,7 @@ TelosB/SkyMote family, or to Zolertia's Z1 platform.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{Timing Inaccuracy Problem in MSPSim}
+\section{Observed Timing Inaccuracy Problem in MSPSim}
 
 When performing our own simulations with virtual networks of MSP430-based
 motes, we noticed timing inaccuracies in comparison to experiences made
@@ -78,26 +80,33 @@ unexplained delays during packet transmission (TX) over the radio medium,
 that weren't observed during similar experiences on physical motes.
 We then investigated the problem, and discovered the following results.
 
-The problem concerns the emulation of the TI ChipCon CC2420 radio
-transceiver by the MSPSim software package.
+The problem concerns the emulation of radio-enabled, MSP430-powered WSN
+devices (a.k.a. ``motes'') by the MSPSim software package.
 
 The differences appear on one precise operation: when loading packet data
-into the transmission (TX) buffer of the emulated radio transceiver.
-MSPSim, when emulating the CC2420 transceiver, performs TX buffer loading
-much more slowly than the physical CC2420 chip actually does.
+into the transmission (TX) buffer of the emulated radio transceiver---a TI
+CC2420 in the case of the hardware platforms studied in the present paper.
 
-A simple example program, which only role is to load data packets
-(110 bytes, that is: near the maximum size for IEEE
-802.15.4\footnotemark[1] data packets), compiled for and run on
-Zolertia Z1 hardware platform, clearly shows this timing difference.
-The results of the comparison between execution on a simulted Z1 mote
-in COOJA/MSPSim and on physical Z1 hardware is shown in
-Table~\ref{TblTXPktLoadDelays} hereafter.
+MSPSim, when emulating the mote, performs this TX buffer loading at
+a different speed than the actual hardware.
 
+Thus, we wrote a simple example program, whose only role is to load data
+packets of various sizes, chosen amongst:
+\begin{itemize}
+\item \emph{moderate} size, with a payload of 30 bytes;
+\item \emph{medium} size, with a payload of 60 bytes;
+\item \emph{large} size, with a payload of 110 bytes (that is:
+      near the maximum size for IEEE 802.15.4\footnotemark[1] data packets).
+\end{itemize}
 \footnotetext[1]{IEEE 802.15.4 is the standard defining the physical
 layer (PHY) that the involved CC2420 radio transceiver---as well as
 many others---communicates on. The absolute maximum size for IEEE
 802.15.4 data packets is 127 8-bit bytes.}
+This program has been compiled for, and run on MSP430- and CC2420-based
+hardware platforms, that is: SkyMote/TelosB, and Zolertia Z1 motes.
+The results of the comparison between execution on simulated motes
+in COOJA/MSPSim and on physical hardware are shown in
+Table~\ref{TblTXPktLoadDelays} hereafter.
 
 \begin{sidewaystable}[!p]
 \centering
@@ -181,7 +190,7 @@ Results with RIOT OS on Z1 hardware\\
 \ \\
 
 \caption{Delays observed for loading packets into CC2420 TX buffer,
-using various software platforms and implementations.}
+using various software platforms (i.e.: WSN operating systems).}
 \label{TblTXPktLoadDelays}
 \end{sidewaystable}
 
@@ -190,32 +199,150 @@ In Table~\ref{TblTXPktLoadDelays}, delay values are given in ``ticks'' of
 32,768~Hz. The unit is thus a fixed period of time equal to about
 30.5~microseconds.
 
+\medskip
+
+These results show that:
+\begin{itemize}
+\item for the Z1 hardware platform, the results are just catastrophic:
+the difference between experimental and simulation values represent
+100\% to almost 200\% of the actual delay! Such overestimated values
+are clearly unusable for evaluation purposes;
+\item for the SkyMote/Telosb, the differences are much smaller, but still
+is beyond 10\%, and even 15\% for the RIOT OS setup, which is not negligible
+for an accurate evaluation work; moreover, these differences can go in
+both senses (that is: under- and over-estimation, while on Z1 the inaccuracy
+always consists in overestimation), which makes the timing inaccuracy of
+simulations quite unpredictable and thus hard to estimate and correct
+without a comparison with experimentation on actual hardware.
+\end{itemize}
+
 These values are given for different operating systems---the well-known
-Contiki already cited, as well as the very recent RIOT OS~\cite{RIOT},
+Contiki already cited, as well as the more recent RIOT OS~\cite{RIOT}
 which is also specialized in WSN---as well as for two kind of SPI drivers:
 \begin{itemize}
-\item a standard SPI driver, which waits for every transmitted byte to be
+\item a standard SPI model, which waits for every transmitted byte to be
 validated by the hardware SPI interface before sending the next one:
-we also this the ``safe'' SPI access model, since it allows to detect
-any problem that can occur during transmission on the SPU bus;
+we also call it the ``safe'' SPI access model, since it allows to detect
+any problem that can occur during transmission on the SPI bus; this is
+the SPI write method used by RIOT OS;
 \item a so-called ``fast write'' SPI model, where a byte is written to
 the bus every time the SPI hardware TX register is empty, without waiting
-for the validation signals for the previous byte to be written: this is
+for the validation signals for the previous byte to be returned; this is
 the SPI write method used by the Contiki OS. While this allows for faster
 writes on the SPI bus, it makes transfers---at least in theory---less
 reliable. (Note however that while this method dramatically accelerates
 SPI transmissions to the radio transceiver, it doesn't make the timing
-differences observed between simulations and hardware runs disappear.)
+differences observed between simulations and hardware runs disappear
+when using Contiki OS.)
 \end{itemize}
 
-We thus see that whatever the software environment used, the inaccuracy
-in timing for the TX buffer loading operation is very important:
-the simulated loading delay is always 2 to 3 times larger than
-the actual delay on hardware!
+For completion sake, we modified the RIOT OS SPI driver to make it use
+the ``fast write'' SPI model, then performed our tests again. The results
+thus obtained are shown in Table~\ref{TblDelaysModifDrivers}.
 
-Such a difference can be expected to have serious consequences on
-the validity of evaluations made with COOJA simulations, more precisely
-on time and performance evaluations.
+\begin{sidewaystable}[!p]
+\centering
+
+\newcommand{\ticks}[1]{#1 ticks}
+\newcommand{\moy}[1]{$\mu=$ \ticks{#1}}
+\newcommand{\ect}[1]{$\sigma=$ \ticks{#1}}
+\newcommand{\estus}[1]{($\approx$ #1 $\mu$sec.)}
+\newcommand{\prctv}[1]{#1\% exp. value}
+
+\begin{tabular}{|l|rr|rr|rcl|}
+\hline
+Pkt. Size & \multicolumn{2}{c|}{Cooja Simulation}
+          & \multicolumn{2}{c|}{Hardware Experiment}
+          & \multicolumn{3}{c|}{Mean Difference (under-estimation)} \\
+\hline
+ Moderate & \moy{39.2} & \ect{0.39} & \moy{38.4} & \ect{0.49}
+          & 0.8 ticks & \estus{24} & \prctv{2.1} \\
+ Medium   & \moy{53.2} & \ect{0.39} & \moy{52.8} & \ect{0.40}
+          & 0.4 ticks & \estus{12} & \prctv{0.8} \\
+ Large    & \moy{76.2} & \ect{0.39} & \moy{75.2} & \ect{0.39}
+          & 1.0 ticks & \estus{31} & \prctv{1.3} \\
+\hline
+\end{tabular}
+\\
+Results with RIOT OS \emph{and} modified ``fast'' SPI writes
+on SkyMote/TelosB hardware\\
+\ \\
+
+\begin{tabular}{|l|rr|rr|rcl|}
+\hline
+Pkt. Size & \multicolumn{2}{c|}{Cooja Simulation}
+          & \multicolumn{2}{c|}{Hardware Experiment}
+          & \multicolumn{3}{c|}{Mean Difference (under-estimation)} \\
+\hline
+ Moderate & \moy{27.0} & \ect{0.00} & \moy{10.0} & \ect{0.00}
+          & 17.0 ticks & \estus{519} & \prctv{170.0} \\
+ Medium   & \moy{35.0} & \ect{0.00} & \moy{13.2} & \ect{0.28}
+          & 21.8 ticks & \estus{665} & \prctv{165.2} \\
+ Large    & \moy{49.0} & \ect{0.00} & \moy{18.2} & \ect{0.39}
+          & 30.8 ticks & \estus{940} & \prctv{169.2} \\
+\hline
+\end{tabular}
+\\
+Results with RIOT OS \emph{and} modified ``fast'' SPI writes
+on Z1 hardware\\
+\ \\
+
+\caption{Delays observed for loading packets into CC2420 TX buffer,
+using RIOT OS with a modified SPI driver based upon the ``fast write'' model.}
+\label{TblDelaysModifDrivers}
+\end{sidewaystable}
+
+With this modified RIOT OS setup, we can see that:
+\begin{itemize}
+\item there is absolutely no improvement for the Z1 platform, the timing
+results obtained are still overestimated by about 170\% of the actual value!
+\item for the SkyMote/TelosB platform, the situation improves, leading to
+the obtention of quite accurate results (2\% or less of inaccuracy).
+\end{itemize}
+This gives us leads about the cause of this inaccuracy problem: since it
+is largely dependent on the hardware platform simulated \emph{and} the method
+used to write on the SPI bus, it is probably not (mainly) due to the
+emulation of the CC2420 transceiver chip, but rather to the evaluation of
+the timing of SPI bus transfers, made at the MCU level. It is obvious that
+the emulation of the MSP420F2617 (the MCU powering the Z1 mote) just
+overestimates largely the SPI delays, while the emulation of the MSP430F1611
+(from SkyMote/TelosB) performs better on that aspect.
+
+\medskip
+
+We thus see that whatever the software environment used, we can make the
+following constatations concerning the inaccuracy in timing for the TX buffer
+loading operation:
+\begin{itemize}
+\item for the Zolertia Z1 hardware platform, this inaccuracy is just huge:
+the simulated loading delay is always 2 to 3 times larger than the actual
+delay on hardware, whatever the setup (OS and SPI driver implementation)!
+\item for the SkyMote/TelosB hardware platform, the inaccuracy is much less
+important in absolute value, but less predictable, since it can go in both
+senses: under-estimation or over-estimation of the actual delay on hardware.
+Moreover, this inaccuracy can go up to 15\% of the real value (and even more
+when running RIOT OS) which is not a negligible fraction.
+\end{itemize}
+This just makes the time-related results obtained with COOJA/MSPSim
+simulations unreliable for evaluation purposes, particularly on Zolertia Z1,
+but also on the very popular SkyMote/TelosB hardware platform.
+
+Moreover, since the problem seems to be caused by the emulation of
+MSP430-based MCUs by the MSPSim emulator, we expect the vast majority
+of the other motes and evaluation boards emulated by the Contiki 2.7
+(i.e.: latest release) version of COOJA/MSPSim framework to be also similarly
+impacted by this problem, at various levels. Since we don't have specimens
+of these other pieces of hardware to test, we can't provide more details.
+
+We believe, however, that users of these devices should perform their
+own tests to evaluate the possible inaccuracy and its impact on their work.
+To help in that matter, we freely provide the programs we used to perform the
+present work here:\\
+\texttt{(URL xxxx)}.
+
+Obviously, such a difference can be expected to have serious consequences
+on the validity of evaluations made with COOJA/MSPSim simulations,
+more specifically on time and performance evaluations.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
