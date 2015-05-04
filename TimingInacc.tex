@@ -26,42 +26,30 @@ Universit\'e de Lorraine,\\
 
 \abstract{
 Simulation/emulation software frameworks are very useful tools: they provide
-easy development and debugging environment, especially for hardly available
-and/or debuggable platforms, like embedded devices. When they are based on
+easy development and debugging environment; when they are based on
 fine-grained simulation, such tools can also allow for easy performance
 evaluation.
 
 Such a tool is the COOJA network simulator, developed and published by the
 Contiki OS project. Since it is based on the MSPSim emulator, it offers
-very fine-grained (i.e.: cycle-exact) simulation on Wireless Sensor Network
-motes. The use of simulations is especially useful for performing virtual
-runs on large sensor networks, comprising a large number of motes that would
-be difficult and costly to operate with actual hardware. Consequently,
-it is now a widely used tool, whose simulations are frequently seen and used
-in scientific literature as a mean to evaluate and validate research projects,
-like protocols for high-level layers of WSN network stacks.
+very fine-grained (i.e.: cycle-accurate) simulation on Wireless Sensor
+Network motes.
 
-When performing our own simulations, we constated timing inconsistencies with
-identical experimentations made on actual hardware. Such inaccuracies clearly
-impair the use of the COOJA/MSPSim framework as an evaluation tool, at least
-for time-related results. We thus investigated the issue, to evaluate the
-extent of the problem.
+When performing our own simulations with COOJA and MSPSim, we observed timing
+inconsistencies with identical experimentations made on actual hardware.
+Such inaccuracies clearly impair the use of the COOJA/MSPSim framework as
+an evaluation tool, at least for time-related results. We thus investigated
+the issue, to evaluate the extent of the problem.
 
-In the following paper, after a brief reminder about COOJA/MSPSim,
-our contributions will firstly consist in a detailed description of this
-timing inaccuracy problem, using an extensive set of comparisons between
-simulations and experimentations on hardware; we will then use these results
-to provide clues about the origin of this issue, and possibly way to fix or
-avoid it; then we will see its consequences on current WSN literature,
-in terms of robustness and reliability of the articles relying on
-such simulations.
-Finally, we will draw some conclusions from all of these contributions
-as an end to the present article.
+In the present paper, as our contributions, we will present the detailed
+results of our investigations, as well as the consequences of this issue,
+and give possible leads to fix or avoid them.
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{COOJA and MSPSim}
+\label{introduction}
 
 Provided by the Contiki OS project~\cite{ContikiOS}, the COOJA network
 simulator~\cite{Cooja} has become a widely used tool in the domain of
@@ -70,6 +58,10 @@ it extensively to perform simulations of small to relatively large wireless
 networks of connected devices embedding sensors and/or actuators, commonly
 named \emph{``motes''}, and thus to develop, debug and evaluate projects
 based in the WSN technology.
+
+The use of simulations is especially useful for performing virtual runs
+on large sensor networks, comprising a large number of motes that would
+be difficult, long and costly to operate with actual hardware.
 
 COOJA itself is a Java-based application, providing three main features:
 \begin{enumerate}
@@ -82,10 +74,10 @@ to provide additional features to the COOJA application.
 \end{enumerate}
 This last feature is used to allow COOJA to actually emulate the various
 motes constituting the WSNs. It indeed embeds and uses dedicated emulator
-programs that perform cycle-exact emulation of the chips with which motes
+programs that perform cycle-accurate emulation of the chips with which motes
 are built: microcontroller units (MCUs), radio transceivers, etc.
 
-This emulation mechanism is one of the main strong points of COOJA:
+This emulation mechanism is one of the main strong assets of COOJA:
 thanks to it, very fine-grained, precise and low-level simulations
 can be performed; this is why COOJA has become a tool of choice especially
 for debugging and evaluating WSN-related software (which happens to be
@@ -100,9 +92,27 @@ including COOJA-based simulations, since motes based on MSP430 MCUs are
 more commonly distributed and used: we can especially think to the pervasive
 TelosB/SkyMote family, or to Zolertia's Z1 platform.
 
+We searched the literature, but we found no article related to any reported
+inaccuracy in COOJA or MSPSim.
+
+In the following paper, after the brief reminder about COOJA/MSPSim in the
+present section~\ref{introduction}, our contributions will firstly
+consist---in section~\ref{results}---in a detailed description of this
+timing inaccuracy problem, using a significant set of comparisons between
+simulations and experimentations on hardware; we will then use these results
+to provide clues about the origin of this issue, and possible means to fix
+or avoid it.
+Then in section~\ref{consequences} we will see its consequences on current
+WSN literature, in terms of robustness and reliability of the articles
+relying on such simulations. Finally, in section~\ref{conclusion}
+we will draw some conclusions from all of these contributions as an end
+to the present article.
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Observed Timing Inaccuracy Problem in MSPSim}
+\label{results}
 
 When performing our own simulations with virtual networks of MSP430-based
 motes, we noticed timing inaccuracies in comparison to experiences made
@@ -131,89 +141,103 @@ packets of various sizes, chosen amongst:
 \end{itemize}
 \footnotetext[1]{IEEE 802.15.4 is the standard defining the physical
 layer (PHY) that the involved CC2420 radio transceiver---as well as
-many others---communicates on. The absolute maximum size for IEEE
-802.15.4 data packets is 127 8-bit bytes.}
+many others---communicates on. The total maximum size for 802.15.4
+packets is 127 bytes.}
 This program has been compiled for, and run on MSP430- and CC2420-based
 hardware platforms, that is: SkyMote/TelosB, and Zolertia Z1 motes.
 The results of the comparison between execution on simulated motes
 in COOJA/MSPSim and on physical hardware are shown in
 Table~\ref{TblTXPktLoadDelays} hereafter.
 
-\begin{sidewaystable}[!p]
-\centering
-
-\newcommand{\ticks}[1]{#1 ticks}
+\newcommand{\ticks}[1]{#1}
 \newcommand{\moy}[1]{$\mu=$ \ticks{#1}}
 \newcommand{\ect}[1]{$\sigma=$ \ticks{#1}}
 \newcommand{\estus}[1]{($\approx$ #1 $\mu$sec.)}
-\newcommand{\prctv}[1]{#1\% exp. value}
+\newcommand{\prctv}[1]{$\approx$ #1\% exp. value}
 
-\begin{tabular}{|l|rr|rr|rcl|}
+\begin{sidewaystable}[!p]
+\centering
+
+%\begin{tabular}{|l|rr|rr|rcl|}
+\begin{tabular}{|l|rr|rr|rl|}
 \hline
 Pkt. Size & \multicolumn{2}{c|}{Cooja Simulation}
           & \multicolumn{2}{c|}{Hardware Experiment}
-          & \multicolumn{3}{c|}{Mean Difference (under-estimation)} \\
+%          & \multicolumn{3}{c|}{Mean Difference} \\
+          & \multicolumn{2}{c|}{Mean Difference} \\
 \hline
  Moderate & \moy{6.4} & \ect{0.50} & \moy{7.2} & \ect{0.40}
-          & 0.8 ticks & \estus{24} & \prctv{11.1} \\
+          & \ticks{--0.8} % & \estus{24}
+           & \prctv{11} \\
  Medium   & \moy{10.7} & \ect{0.46} & \moy{12.7} & \ect{0.48}
-          & 2.0 ticks & \estus{61} & \prctv{15.7} \\
+          & \ticks{--2.0} % & \estus{60}
+           & \prctv{15} \\
  Large    & \moy{18.0} & \ect{0.00} & \moy{20.6} & \ect{0.49}
-          & 2.6 ticks & \estus{79} & \prctv{12.6} \\
+          & \ticks{--2.6} % & \estus{80}
+           & \prctv{13} \\
 \hline
 \end{tabular}
 \\
 Results with Contiki OS on SkyMote/TelosB hardware\\
 \ \\
 
-\begin{tabular}{|l|rr|rr|rcl|}
+\begin{tabular}{|l|rr|rr|rl|}
 \hline
 Pkt. Size & \multicolumn{2}{c|}{Cooja Simulation}
           & \multicolumn{2}{c|}{Hardware Experiment}
-          & \multicolumn{3}{c|}{Mean Difference (under-estimation)} \\
+          & \multicolumn{2}{c|}{Mean Difference} \\
 \hline
  Moderate & \moy{5.0} & \ect{0.14} & \moy{2.3} & \ect{0.44}
-          & 2.7 ticks & \estus{82} & \prctv{117.4} \\
+          & \ticks{2.8} % & \estus{84}
+           & \prctv{122} \\
  Medium   & \moy{8.9} & \ect{0.27} & \moy{4.2} & \ect{0.37}
-          & 4.7 ticks & \estus{143} & \prctv{111.9} \\
+          & \ticks{4.8} % & \estus{145}
+           & \prctv{114} \\
  Large    & \moy{14.0} & \ect{0.14} & \moy{7.2} & \ect{0.39}
-          & 6.8 ticks & \estus{208} & \prctv{94.4} \\
+          & \ticks{6.8} % & \estus{209}
+           & \prctv{95} \\
 \hline
 \end{tabular}
 \\
 Results with Contiki OS on Z1 hardware\\
 \ \\
 
-\begin{tabular}{|l|rr|rr|rcl|}
+\begin{tabular}{|l|rr|rr|rl|}
 \hline
 Pkt. Size & \multicolumn{2}{c|}{Cooja Simulation}
           & \multicolumn{2}{c|}{Hardware Experiment}
-          & \multicolumn{3}{c|}{Mean Difference (under-estimation)} \\
+          & \multicolumn{2}{c|}{Mean Difference} \\
 \hline
  Moderate & \moy{58.0} & \ect{0.00} & \moy{50.3} & \ect{0.46}
-          & 7.7 ticks & \estus{235} & \prctv{15.3} \\
+          & \ticks{7.7} % & \estus{235}
+           & \prctv{15} \\
  Medium   & \moy{85.2} & \ect{0.39} & \moy{73.6} & \ect{0.50}
-          & 11.6 ticks & \estus{354} & \prctv{15.8} \\
+          & \ticks{11.6} % & \estus{355}
+           & \prctv{16} \\
  Large    & \moy{131.2} & \ect{0.39} & \moy{111.5} & \ect{0.51}
-          & 19.7 ticks & \estus{601} & \prctv{17.7} \\
+          & \ticks{19.7} % & \estus{601}
+           & \prctv{18} \\
 \hline
 \end{tabular}
 \\
 Results with RIOT OS on SkyMote/TelosB hardware\\
 \ \\
 
-\begin{tabular}{|l|rr|rr|rcl|}
+\begin{tabular}{|l|rr|rr|rl|}
 \hline
 Pkt. Size & \multicolumn{2}{c|}{Cooja Simulation}
           & \multicolumn{2}{c|}{Hardware Experiment}
-          & \multicolumn{3}{c|}{Mean Difference (under-estimation)} \\
+          & \multicolumn{2}{c|}{Mean Difference} \\
 \hline
  Moderate & \moy{46.0} & \ect{0.00} & \moy{16.2} & \ect{0.39}
-          & 29.8 ticks & \estus{909} & \prctv{184.0} \\
+          & \ticks{29.8} % & \estus{910}
+           & \prctv{184} \\
  Medium   & \moy{69.0} & \ect{0.00} & \moy{24.2} & \ect{0.39}
-          & 44.8 ticks & \estus{1367} & \prctv{185.1} \\
+          & \ticks{44.8} % & \estus{1368}
+           & \prctv{185} \\
  Large    & \moy{106.8} & \ect{0.39} & \moy{38.0} & \ect{0.00}
-          & 68.8 ticks & \estus{2100} & \prctv{181.1} \\
+          & \ticks{68.8} % & \estus{2100}
+           & \prctv{181} \\
 \hline
 \end{tabular}
 \\
@@ -274,24 +298,23 @@ thus obtained are shown in Table~\ref{TblDelaysModifDrivers}.
 \begin{sidewaystable}[!p]
 \centering
 
-\newcommand{\ticks}[1]{#1 ticks}
-\newcommand{\moy}[1]{$\mu=$ \ticks{#1}}
-\newcommand{\ect}[1]{$\sigma=$ \ticks{#1}}
-\newcommand{\estus}[1]{($\approx$ #1 $\mu$sec.)}
-\newcommand{\prctv}[1]{#1\% exp. value}
-
-\begin{tabular}{|l|rr|rr|rcl|}
+%\begin{tabular}{|l|rr|rr|rcl|}
+\begin{tabular}{|l|rr|rr|rl|}
 \hline
 Pkt. Size & \multicolumn{2}{c|}{Cooja Simulation}
           & \multicolumn{2}{c|}{Hardware Experiment}
-          & \multicolumn{3}{c|}{Mean Difference (under-estimation)} \\
+%          & \multicolumn{3}{c|}{Mean Difference} \\
+          & \multicolumn{2}{c|}{Mean Difference} \\
 \hline
  Moderate & \moy{39.2} & \ect{0.39} & \moy{38.4} & \ect{0.49}
-          & 0.8 ticks & \estus{24} & \prctv{2.1} \\
+          & \ticks{0.8} % & \estus{24}
+           & \prctv{2} \\
  Medium   & \moy{53.2} & \ect{0.39} & \moy{52.8} & \ect{0.40}
-          & 0.4 ticks & \estus{12} & \prctv{0.8} \\
+          & \ticks{0.4} % & \estus{12}
+           & \prctv{1} \\
  Large    & \moy{76.2} & \ect{0.39} & \moy{75.2} & \ect{0.39}
-          & 1.0 ticks & \estus{31} & \prctv{1.3} \\
+          & \ticks{1.0} % & \estus{31}
+           & \prctv{1} \\
 \hline
 \end{tabular}
 \\
@@ -299,18 +322,21 @@ Results with RIOT OS \emph{and} modified ``fast'' SPI writes
 on SkyMote/TelosB hardware\\
 \ \\
 
-\begin{tabular}{|l|rr|rr|rcl|}
+\begin{tabular}{|l|rr|rr|rl|}
 \hline
 Pkt. Size & \multicolumn{2}{c|}{Cooja Simulation}
           & \multicolumn{2}{c|}{Hardware Experiment}
-          & \multicolumn{3}{c|}{Mean Difference (under-estimation)} \\
+          & \multicolumn{2}{c|}{Mean Difference} \\
 \hline
  Moderate & \moy{27.0} & \ect{0.00} & \moy{10.0} & \ect{0.00}
-          & 17.0 ticks & \estus{519} & \prctv{170.0} \\
- Medium   & \moy{35.0} & \ect{0.00} & \moy{13.2} & \ect{0.28}
-          & 21.8 ticks & \estus{665} & \prctv{165.2} \\
+          & \ticks{17.0} % & \estus{519}
+           & \prctv{170} \\
+ Medium   & \moy{35.0} & \ect{0.00} & \moy{13.2} & \ect{0.39}
+          & \ticks{21.8} % & \estus{665}
+           & \prctv{166} \\
  Large    & \moy{49.0} & \ect{0.00} & \moy{18.2} & \ect{0.39}
-          & 30.8 ticks & \estus{940} & \prctv{169.2} \\
+          & \ticks{30.8} % & \estus{941}
+           & \prctv{170} \\
 \hline
 \end{tabular}
 \\
@@ -378,6 +404,7 @@ more specifically on time and performance evaluations.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Consequences}
+\label{consequences}
 
 We looked in recent literature, and found many recent articles (that is:
 published in year 2014 or later) using COOJA simulations to evaluate
@@ -430,6 +457,7 @@ conclusions of these papers in jeopardy.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Conclusion}
+\label{conclusion}
 
 In the present article, we provided the following contributions:
 \begin{itemize}
