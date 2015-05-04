@@ -46,6 +46,7 @@ results of our investigations, as well as the consequences of this issue,
 and give possible leads to fix or avoid them.
 }
 
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{COOJA and MSPSim}
@@ -429,12 +430,12 @@ present work at the following URL.
 \label{consequences}
 
 We looked in recent literature, and found many recent articles (that is:
-published in year 2014 or later) using COOJA simulations to evaluate
-performance of WSN projects related directly or indirectly to 802.15.4
-network timing. Among them, we can cite the following:
-\begin{itemize}
-\item papers that exclusively rely on simulations for timing-related
-performance evaluations: most use virtual SkyMote/TelosB nodes like
+published in year 2014 or later) relying on COOJA simulations to perform,
+directly or indirectly, time-related performance evaluation of WSN projects
+based on 802.15.4 networking.
+
+Among them, we can see that most of these papers use virtual SkyMote/TelosB
+nodes like
 \cite{Constrain-Routing-Trees-2014}, \cite{Contiki-RPL-Eval-2014},
 \cite{Co-RPL-2014}, \cite{DINAS-2014},
 \cite{Efficient-Distrib-Svc-Discovery-2014},
@@ -442,23 +443,20 @@ performance evaluations: most use virtual SkyMote/TelosB nodes like
 \cite{TinySDN-2014}, \cite{Trickle-L2-2014},
 \cite{Visual-Sensor-Networks-2014},
 and \cite{RPL-GreenHouse-Convgc-Time-2014} (the latter also provides
-MATLAB results, but still no actual experimental data);
+MATLAB results, but no actual experimental data);
 while some other use different, specific MSP430-based motes
 (e.g.: EXP5438 for \cite{Key-Mgmt-2015}, or WisMote for
 \cite{Lightweight-Multicast-Forwarding-2014}) whose sensibility
-to the present inaccuracy problem is unknown to us;
-these works are the most threatened by the issue described
-in the present paper;
-\item papers that rely on both simulations and experimental results
-for timing-related performance evaluations: we especially found
-\cite{Probing-Mech-wu-2015} which also presents purely numerical,
-MATLAB-produced results; such articles, (much) less common, are thus
-less sensible to simulation inaccuracies, but can nonetheless present
-some biased results.
-\end{itemize}
+to the present inaccuracy problem is unknown to us.
 
-Almost all of these papers present work related to high-level layers
-of WSN network stacks, especially routing protocols (like
+We also saw one paper that rely on both simulations and experimental
+results for timing-related performance evaluations: we especially found
+\cite{Probing-Mech-wu-2015}, which also presents purely numerical,
+MATLAB-produced results. We expect such articles, (much) less common,
+to be less sensible to simulation inaccuracies.
+
+Almost all of these papers present work related to high layers of
+WSN network stacks, especially routing protocols (like
 \cite{Constrain-Routing-Trees-2014}, \cite{Contiki-RPL-Eval-2014},
 \cite{Co-RPL-2014}, \cite{IETF-Routing-WSN-2014},
 \cite{RPL-GreenHouse-Convgc-Time-2014}, and \cite{Trickle-L2-2014})
@@ -471,10 +469,11 @@ Some can even present alternate network stacks (\cite{TinySDN-2014}).
 
 Such studies, which rely on COOJA/MSPSim emulation runs to evaluate
 time-related performance on WSN, have a (potentially high) risk of
-suffering from inexact results due to the inaccuracy described hereabove,
-which may go from a moderate bias, up to complete irrelevancy; in the latter
-case, the issue obviously amounts as far as putting the discussions and
-conclusions of these papers in jeopardy.
+suffering from inexact results due to the timing inaccuracy described
+hereabove, which may go from moderate bias up to critical errors;
+in the latter case, the issue obviously goes as far as putting
+the discussions and conclusions of these papers in jeopardy.
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -484,20 +483,22 @@ conclusions of these papers in jeopardy.
 In the present article, we provided the following contributions:
 \begin{itemize}
 \item we clearly showed that MSPSim emulation suffers from a serious timing
-inaccuracy issue concerning SPI bus access, which impacts especially
+inaccuracy issue concerning SPI bus access, which especially impacts
 communication between MCUs and radio transceivers---and thus, wireless
 network operation---on WSN motes;
 \item we described the extent of the problem with detailed experimentation
-results---extent which happens to be serious, especially concerning the
-emulation of the Zolertia Z1 hardware platform---and provided serious clues
-about the cause of the issue (and consequently the way to fix it);
-\item and we briefly enumerated a list of many recently published articles
-in the WSN domain whose results are potentially negatively impacted by this
-problem, because they rely on COOJA/MSPSim simulations to evaluate their work.
+results---extent which happens to be serious, especially for the emulation
+of the Zolertia Z1 hardware platform;
+\item we provided serious clues about the cause of the issue, and
+consequently showed the area to investigate for fixing it.
+\end{itemize}
+
+We briefly enumerated a list of many recently published articles in the
+WSN domain whose results are potentially negatively impacted by this problem,
+because they rely on COOJA/MSPSim simulations to evaluate their work.
 The validity of such publications may be put in jeopardy by the
 issue we describe here, especially when time-related results
 obtained by simulation are involved.
-\end{itemize}
 
 \medskip
 
@@ -505,20 +506,21 @@ Until a fix is made and published to correct this timing inaccuracy
 in the MSPSim emulator, we believe the only way to get robust and reliable
 results concerning timing and time-related performance evaluation is
 to perform tests on actual hardware, which will eliminate any bias
-that could be introduced by errors or inaccuracies in emulator software.
+that can be introduced by errors or inaccuracies in simulation.
 
 Of course, such hardware tests are much more difficult, long and
-costly to prepare, run and analyze. That's why fixing the problem
-we describe in the present paper by correcting MSPSim code should
-be done as soon as possible.
+costly to prepare, run and analyze.
 
-Many published articles in the domain of WSNs, including very recent
-and current publications, include simulations made with the COOJA/MSPSim
-framework. This is clearly a testimony of the usefulness of the COOJA/MSPSim
-software package. While the issue described here can impair its use as
-a performance evaluation tool, it does not affect its other applications,
-like the ability to develop and debug WSN-related software much more easily
-thanks to its emulation features.
+Note that many published articles in the domain of WSNs, including
+very recent publications, include simulations made with the COOJA/MSPSim
+framework. This is clearly a testimony of the usefulness of the this
+software package. That's why fixing the problem we describe in the present
+paper by correcting MSPSim code as soon as possible is really important.
+
+Note also that while the issue described here can impair the use of
+COOJA/MSPSim as a performance evaluation tool, it does not affect its other
+applications, like the ability to develop and debug WSN-related software much
+more easily thanks to its emulation features.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
