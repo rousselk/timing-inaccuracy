@@ -188,151 +188,129 @@ incrementing at a rate of 32,768~Hz. The unit is thus a fixed period of
 time equal to about 30.5~microseconds.
 
 
-\newcommand{\tabtitle}[1]{\multicolumn{7}{c}{\bfseries #1}}
-\newcommand{\ticks}[1]{#1}
+\newcommand{\tabtitle}[1]{\multicolumn{8}{c}{\bfseries #1}}
+\newcommand{\ticks}[1]{#1 t.}
 \newcommand{\moy}[1]{$\mu=$ \ticks{#1}}
 \newcommand{\ect}[1]{$\sigma=$ \ticks{#1}}
 \newcommand{\estus}[1]{($\approx$ #1 $\mu$sec.)}
 \newcommand{\prctv}[1]{$\approx$ #1\% exp. value}
 
-\begin{table*}[hbtp]
+\begin{table*}[htbp]
 \caption{Delays Observed for Loading One Packet into CC2420 TX Buffer
 of a SkyMote/TelosB Mote, Using Various Software Setups.}
 \label{TblTXPktLoadDelaysSkyTelosB}
 \centering
 
-%\begin{tabular}{|l|rr|rr|rcl|}
-\begin{tabular}{|l|rr|rr|rl|}
+\begin{tabular}{l|rr|rr|rcl}
 \tabtitle{Results with Contiki OS}\\
 \hline
 Pkt. Size & \multicolumn{2}{c|}{Cooja Simulation}
           & \multicolumn{2}{c|}{Hardware Experiment}
-%          & \multicolumn{3}{c|}{Mean Difference} \\
-          & \multicolumn{2}{c|}{Mean Difference} \\
+          & \multicolumn{3}{c}{Mean Difference} \\
 \hline
  Moderate & \moy{6.4} & \ect{0.50} & \moy{7.2} & \ect{0.40}
-          & \ticks{--0.8} % & \estus{24}
-           & \prctv{11} \\
+          & \ticks{--0.8}  & \estus{24} & \prctv{11} \\
  Medium   & \moy{10.7} & \ect{0.46} & \moy{12.7} & \ect{0.48}
-          & \ticks{--2.0} % & \estus{60}
-           & \prctv{15} \\
+          & \ticks{--2.0}  & \estus{60} & \prctv{15} \\
  Large    & \moy{18.0} & \ect{0.00} & \moy{20.6} & \ect{0.49}
-          & \ticks{--2.6} % & \estus{80}
-           & \prctv{13} \\
+          & \ticks{--2.6}  & \estus{80} & \prctv{13} \\
 \hline
 \end{tabular}
 
 \vspace{4pt}
 
-\begin{tabular}{|l|rr|rr|rl|}
+\begin{tabular}{l|rr|rr|rcl}
 \tabtitle{Results with RIOT OS (standard ``safe'' SPI driver)}\\
 \hline
 Pkt. Size & \multicolumn{2}{c|}{Cooja Simulation}
           & \multicolumn{2}{c|}{Hardware Experiment}
-          & \multicolumn{2}{c|}{Mean Difference} \\
+          & \multicolumn{3}{c}{Mean Difference} \\
 \hline
  Moderate & \moy{58.0} & \ect{0.00} & \moy{50.3} & \ect{0.46}
-          & \ticks{7.7} % & \estus{235}
-           & \prctv{15} \\
+          & \ticks{7.7}  & \estus{235} & \prctv{15} \\
  Medium   & \moy{85.2} & \ect{0.39} & \moy{73.6} & \ect{0.50}
-          & \ticks{11.6} % & \estus{355}
-           & \prctv{16} \\
+          & \ticks{11.6}  & \estus{355} & \prctv{16} \\
  Large    & \moy{131.2} & \ect{0.39} & \moy{111.5} & \ect{0.51}
-          & \ticks{19.7} % & \estus{601}
-           & \prctv{18} \\
+          & \ticks{19.7}  & \estus{601} & \prctv{18} \\
 \hline
 \end{tabular}
 
 \vspace{4pt}
 
-\begin{tabular}{|l|rr|rr|rl|}
+\begin{tabular}{l|rr|rr|rcl}
 \tabtitle{Results with RIOT OS \emph{and} modified ``fast'' SPI writes}\\
 \hline
 Pkt. Size & \multicolumn{2}{c|}{Cooja Simulation}
           & \multicolumn{2}{c|}{Hardware Experiment}
-          & \multicolumn{2}{c|}{Mean Difference} \\
+          & \multicolumn{3}{c}{Mean Difference} \\
 \hline
  Moderate & \moy{39.2} & \ect{0.39} & \moy{38.4} & \ect{0.49}
-          & \ticks{0.8} % & \estus{24}
-           & \prctv{2} \\
+          & \ticks{0.8}  & \estus{24} & \prctv{2} \\
  Medium   & \moy{53.2} & \ect{0.39} & \moy{52.8} & \ect{0.40}
-          & \ticks{0.4} % & \estus{12}
-           & \prctv{1} \\
+          & \ticks{0.4}  & \estus{12} & \prctv{1} \\
  Large    & \moy{76.2} & \ect{0.39} & \moy{75.2} & \ect{0.39}
-          & \ticks{1.0} % & \estus{31}
-           & \prctv{1} \\
+          & \ticks{1.0}  & \estus{31} & \prctv{1} \\
 \hline
 \end{tabular}
 
 \end{table*}
 
 
-\begin{table*}[hbtp]
+\begin{table*}[htbp]
 \caption{Delays Observed for Loading One Packet into CC2420 TX Buffer
 of a Zolertia Z1 Mote, Using Various Software Setups.}
 \label{TblTXPktLoadDelaysZ1}
 \centering
 
-%\begin{tabular}{|l|rr|rr|rcl|}
-\begin{tabular}{|l|rr|rr|rl|}
+\begin{tabular}{l|rr|rr|rcl}
 \tabtitle{Results with Contiki OS}\\
 \hline
 Pkt. Size & \multicolumn{2}{c|}{Cooja Simulation}
           & \multicolumn{2}{c|}{Hardware Experiment}
-%          & \multicolumn{3}{c|}{Mean Difference} \\
-          & \multicolumn{2}{c|}{Mean Difference} \\
+          & \multicolumn{3}{c}{Mean Difference} \\
 \hline
  Moderate & \moy{5.0} & \ect{0.14} & \moy{2.3} & \ect{0.44}
-          & \ticks{2.8} % & \estus{84}
-           & \prctv{122} \\
+          & \ticks{2.8}  & \estus{84} & \prctv{122} \\
  Medium   & \moy{8.9} & \ect{0.27} & \moy{4.2} & \ect{0.37}
-          & \ticks{4.8} % & \estus{145}
-           & \prctv{114} \\
+          & \ticks{4.8}  & \estus{145} & \prctv{114} \\
  Large    & \moy{14.0} & \ect{0.14} & \moy{7.2} & \ect{0.39}
-          & \ticks{6.8} % & \estus{209}
-           & \prctv{95} \\
+          & \ticks{6.8}  & \estus{209} & \prctv{95} \\
 \hline
 \end{tabular}
 
 \vspace{4pt}
 
-\begin{tabular}{|l|rr|rr|rl|}
+\begin{tabular}{l|rr|rr|rcl}
 \tabtitle{Results with RIOT OS (standard ``safe'' SPI driver)}\\
 \hline
 Pkt. Size & \multicolumn{2}{c|}{Cooja Simulation}
           & \multicolumn{2}{c|}{Hardware Experiment}
-          & \multicolumn{2}{c|}{Mean Difference} \\
+          & \multicolumn{3}{c}{Mean Difference} \\
 \hline
  Moderate & \moy{46.0} & \ect{0.00} & \moy{16.2} & \ect{0.39}
-          & \ticks{29.8} % & \estus{910}
-           & \prctv{184} \\
+          & \ticks{29.8}  & \estus{910} & \prctv{184} \\
  Medium   & \moy{69.0} & \ect{0.00} & \moy{24.2} & \ect{0.39}
-          & \ticks{44.8} % & \estus{1368}
-           & \prctv{185} \\
+          & \ticks{44.8}  & \estus{1368} & \prctv{185} \\
  Large    & \moy{106.8} & \ect{0.39} & \moy{38.0} & \ect{0.00}
-          & \ticks{68.8} % & \estus{2100}
-           & \prctv{181} \\
+          & \ticks{68.8}  & \estus{2100} & \prctv{181} \\
 \hline
 \end{tabular}
 
 \vspace{4pt}
 
-\begin{tabular}{|l|rr|rr|rl|}
+\begin{tabular}{l|rr|rr|rcl}
 \tabtitle{Results with RIOT OS \emph{and} modified ``fast'' SPI writes}\\
 \hline
 Pkt. Size & \multicolumn{2}{c|}{Cooja Simulation}
           & \multicolumn{2}{c|}{Hardware Experiment}
-          & \multicolumn{2}{c|}{Mean Difference} \\
+          & \multicolumn{3}{c}{Mean Difference} \\
 \hline
  Moderate & \moy{27.0} & \ect{0.00} & \moy{10.0} & \ect{0.00}
-          & \ticks{17.0} % & \estus{519}
-           & \prctv{170} \\
+          & \ticks{17.0} & \estus{519} & \prctv{170} \\
  Medium   & \moy{35.0} & \ect{0.00} & \moy{13.2} & \ect{0.39}
-          & \ticks{21.8} % & \estus{665}
-           & \prctv{166} \\
+          & \ticks{21.8} & \estus{665} & \prctv{166} \\
  Large    & \moy{49.0} & \ect{0.00} & \moy{18.2} & \ect{0.39}
-          & \ticks{30.8} % & \estus{941}
-           & \prctv{170} \\
+          & \ticks{30.8} & \estus{941} & \prctv{170} \\
 \hline
 \end{tabular}
 \\
