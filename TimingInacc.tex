@@ -1,16 +1,15 @@
-\documentclass[a4paper,10pt]{article}
+\documentclass[10pt,final,journal,twocolumn]{IEEEtran}
 
 \usepackage[T1]{fontenc}
-\usepackage{rotfloat}
 
 \title{Timing Inaccuracy in MSPSim Emulator: Consequences on COOJA Simulations}
 \author{
-K\'evin Roussel, Ye-Qiong Song and Olivier Zendra\\
-LORIA/INRIA Nancy Grand-Est,\\
-Universit\'e de Lorraine,\\
-615, rue du Jardin Botanique,\\
-54600 Villers-l\`es-Nancy, France\\
-\texttt{\{Kevin.Roussel,Ye-Qiong.Song,Olivier.Zendra\}@inria.fr}
+K\'evin~Roussel, Ye-Qiong~Song and Olivier~Zendra%\\
+%LORIA/INRIA Nancy Grand-Est,\\
+%Universit\'e de Lorraine,\\
+%615, rue du Jardin Botanique,\\
+%54600 Villers-l\`es-Nancy, France\\
+%\texttt{\{Kevin.Roussel,Ye-Qiong.Song,Olivier.Zendra\}@inria.fr}
 }
 \date{}
 
@@ -24,7 +23,7 @@ Universit\'e de Lorraine,\\
 
 \hyphenation{MSP-Sim}
 
-\abstract{
+\begin{abstract}
 Simulation/emulation software frameworks are very useful tools: they provide
 easy development and debugging environment; when they are based on
 fine-grained simulation, such tools can also allow for easy performance
@@ -44,7 +43,7 @@ the issue, to evaluate the extent of the problem.
 In the present paper, as our contributions, we will present the detailed
 results of our investigations, as well as the consequences of this issue,
 and give possible leads to fix or avoid them.
-}
+\end{abstract}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -154,7 +153,7 @@ to ensure the stability of the observed results.
 It has been compiled for, and run on the following hardware platforms:
 \begin{itemize}
 \item the well-known SkyMote/TelosB mote, powered by a MSP430F1611 MCU;
-\item the more recent Zolertia Z1 mote powered by a MSP430F2617 MCU.
+\item the more recent Zolertia Z1 mote powered by a MSP430 F2617 MCU.
 \end{itemize}
 Both devices have the same CC2420 radio transceiver.
 
@@ -189,17 +188,22 @@ incrementing at a rate of 32,768~Hz. The unit is thus a fixed period of
 time equal to about 30.5~microseconds.
 
 
+\newcommand{\tabtitle}[1]{\multicolumn{7}{c}{\bfseries #1}}
 \newcommand{\ticks}[1]{#1}
 \newcommand{\moy}[1]{$\mu=$ \ticks{#1}}
 \newcommand{\ect}[1]{$\sigma=$ \ticks{#1}}
 \newcommand{\estus}[1]{($\approx$ #1 $\mu$sec.)}
 \newcommand{\prctv}[1]{$\approx$ #1\% exp. value}
 
-\begin{table}[hp]
+\begin{table*}[hbtp]
+\caption{Delays Observed for Loading One Packet into CC2420 TX Buffer
+of a SkyMote/TelosB Mote, Using Various Software Setups.}
+\label{TblTXPktLoadDelaysSkyTelosB}
 \centering
 
 %\begin{tabular}{|l|rr|rr|rcl|}
 \begin{tabular}{|l|rr|rr|rl|}
+\tabtitle{Results with Contiki OS}\\
 \hline
 Pkt. Size & \multicolumn{2}{c|}{Cooja Simulation}
           & \multicolumn{2}{c|}{Hardware Experiment}
@@ -217,11 +221,11 @@ Pkt. Size & \multicolumn{2}{c|}{Cooja Simulation}
            & \prctv{13} \\
 \hline
 \end{tabular}
-\\
-Results with Contiki OS\\
-\ \\
+
+\vspace{4pt}
 
 \begin{tabular}{|l|rr|rr|rl|}
+\tabtitle{Results with RIOT OS (standard ``safe'' SPI driver)}\\
 \hline
 Pkt. Size & \multicolumn{2}{c|}{Cooja Simulation}
           & \multicolumn{2}{c|}{Hardware Experiment}
@@ -238,11 +242,11 @@ Pkt. Size & \multicolumn{2}{c|}{Cooja Simulation}
            & \prctv{18} \\
 \hline
 \end{tabular}
-\\
-Results with RIOT OS (standard ``safe'' SPI driver)\\
-\ \\
+
+\vspace{4pt}
 
 \begin{tabular}{|l|rr|rr|rl|}
+\tabtitle{Results with RIOT OS \emph{and} modified ``fast'' SPI writes}\\
 \hline
 Pkt. Size & \multicolumn{2}{c|}{Cooja Simulation}
           & \multicolumn{2}{c|}{Hardware Experiment}
@@ -259,21 +263,19 @@ Pkt. Size & \multicolumn{2}{c|}{Cooja Simulation}
            & \prctv{1} \\
 \hline
 \end{tabular}
-\\
-Results with RIOT OS \emph{and} modified ``fast'' SPI writes\\
-\ \\
 
-\caption{Delays observed for loading one packet into CC2420 TX buffer
-of a SkyMote/TelosB mote, using various software setups.}
-\label{TblTXPktLoadDelaysSkyTelosB}
-\end{table}
+\end{table*}
 
 
-\begin{table}[hp]
+\begin{table*}[hbtp]
+\caption{Delays Observed for Loading One Packet into CC2420 TX Buffer
+of a Zolertia Z1 Mote, Using Various Software Setups.}
+\label{TblTXPktLoadDelaysZ1}
 \centering
 
 %\begin{tabular}{|l|rr|rr|rcl|}
 \begin{tabular}{|l|rr|rr|rl|}
+\tabtitle{Results with Contiki OS}\\
 \hline
 Pkt. Size & \multicolumn{2}{c|}{Cooja Simulation}
           & \multicolumn{2}{c|}{Hardware Experiment}
@@ -291,11 +293,11 @@ Pkt. Size & \multicolumn{2}{c|}{Cooja Simulation}
            & \prctv{95} \\
 \hline
 \end{tabular}
-\\
-Results with Contiki OS\\
-\ \\
+
+\vspace{4pt}
 
 \begin{tabular}{|l|rr|rr|rl|}
+\tabtitle{Results with RIOT OS (standard ``safe'' SPI driver)}\\
 \hline
 Pkt. Size & \multicolumn{2}{c|}{Cooja Simulation}
           & \multicolumn{2}{c|}{Hardware Experiment}
@@ -312,11 +314,11 @@ Pkt. Size & \multicolumn{2}{c|}{Cooja Simulation}
            & \prctv{181} \\
 \hline
 \end{tabular}
-\\
-Results with RIOT OS (standard ``safe'' SPI driver)\\
-\ \\
+
+\vspace{4pt}
 
 \begin{tabular}{|l|rr|rr|rl|}
+\tabtitle{Results with RIOT OS \emph{and} modified ``fast'' SPI writes}\\
 \hline
 Pkt. Size & \multicolumn{2}{c|}{Cooja Simulation}
           & \multicolumn{2}{c|}{Hardware Experiment}
@@ -334,13 +336,9 @@ Pkt. Size & \multicolumn{2}{c|}{Cooja Simulation}
 \hline
 \end{tabular}
 \\
-Results with RIOT OS \emph{and} modified ``fast'' SPI writes\\
 \ \\
 
-\caption{Delays observed for loading one packet into CC2420 TX buffer
-of a Zolertia Z1 mote, using various software setups.}
-\label{TblTXPktLoadDelaysZ1}
-\end{table}
+\end{table*}
 
 \medskip
 
@@ -459,10 +457,10 @@ Almost all of these papers present work related to high layers of
 WSN network stacks, especially routing protocols (like
 \cite{Constrain-Routing-Trees-2014}, \cite{Contiki-RPL-Eval-2014},
 \cite{Co-RPL-2014}, \cite{IETF-Routing-WSN-2014},
-\cite{RPL-GreenHouse-Convgc-Time-2014}, and \cite{Trickle-L2-2014})
+\cite{Trickle-L2-2014}, and \cite{RPL-GreenHouse-Convgc-Time-2014})
 or application-level protocols (e.g.: \cite{DINAS-2014},
-\cite{Efficient-Distrib-Svc-Discovery-2014}, \cite{Key-Mgmt-2015},
-and \cite{Visual-Sensor-Networks-2014}).
+\cite{Efficient-Distrib-Svc-Discovery-2014},
+\cite{Visual-Sensor-Networks-2014}, and \cite{Key-Mgmt-2015}).
 Some can even present alternate network stacks (\cite{TinySDN-2014}).
 
 \medskip
@@ -526,7 +524,7 @@ more easily thanks to its emulation features.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %\vfill
-\bibliographystyle{unsrt}
+\bibliographystyle{IEEEtran}
 {\small
 \bibliography{TimingInacc}}
 
