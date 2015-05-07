@@ -33,9 +33,9 @@ inconsistencies with identical experimentations made on actual hardware.
 Such inaccuracies clearly impair the use of the COOJA/MSPSim framework as
 an evaluation tool, at least for time-related results.
 
-In the present paper, as our contributions, we will present the detailed
-results of our investigations on, as well as the consequences of this issue,
-and give possible leads to fix or avoid them.
+We will present in this paper, as our contributions, the detailed results of
+our investigations on, as well as the consequences of this issue,
+and give possible leads to fix or avoid it.
 \end{abstract}
 
 
@@ -369,16 +369,10 @@ on Zolertia Z1, but also on the very popular SkyMote/TelosB hardware platform.
 \medskip
 
 When computing the relative weight of TX buffer loading in total packet
-transmission duration, we see that the TX load delay can represent up to 57\%
-of the total duration taken to send a packet, especially when running an OS
-different from Contiki. Multiplying this relative weight by the observed
-loading inaccuracy gives us the potential error for evaluating packets
-transmission delays (see Table \ref{TblTXRelWeight} for detailed results).
-We then see that this global inaccuracy percentage only keeps reasonable
-when using the standard `Contiki OS on SkyMote' setup; for other setups,
-this inaccuracy percentage is always at least in the range of 10\% of the
-global packet transmission time; when running the alternative RIOT OS
-on the Z1 hardware this value goes well above 80\%!
+transmission duration, we see that the TX load delay always represent at
+least 10\% ---up to more than 50\%---of the total duration taken to send
+a packet, especially when running an OS different from Contiki (see Table
+\ref{TblTXRelWeight} for detailed results).
 Such an inaccuracy in the evaluation of packet TX delay is obviously bound
 to have strong consequences on the reliability of performance evaluations
 made with COOJA/MSPSim simulations.
@@ -388,57 +382,60 @@ made with COOJA/MSPSim simulations.
 \label{TblTXRelWeight}
 \centering
 
-\begin{tabular}{l|l|l|rrr|r|r|r}
+\begin{tabular}{l|l|l|r|r|r|r}
+\hline
 \hline
 HW Platform & WSN OS  & Pkt. Size
-                  & Load delay & TX delay & Total Delay & Load \%age
-                  & Inaccuracy & Inacc. \%age \\
+                  & Load delay & TX delay & Total Delay
+                  & Load / Total (percentage) \\
 \hline
 SkyMote/TelosB    & Contiki & Moderate
-                  &   196      & 1312     & 1508        & 13\%
-                  &  11\%      &  1\% \\
+                  &   196      & 1312     & 1508
+                  & 13\% \\
 SkyMote/TelosB    & Contiki & Medium
-                  &   327      & 2272     & 2599        & 13\%
-                  &  15\%      &  2\% \\
+                  &   327      & 2272     & 2599
+                  & 13\% \\
 SkyMote/TelosB    & Contiki & Large
-                  &   549      & 3872     & 4421        & 12\%
-                  &  13\%      &  2\% \\
+                  &   549      & 3872     & 4421
+                  & 12\% \\
 \hline
 SkyMote/TelosB    & RIOT OS & Moderate
-                  &  1770      & 1312     & 3082        & 57\%
-                  &  15\%      &  9\% \\
+                  &  1770      & 1312     & 3082
+                  & 57\% \\
 SkyMote/TelosB    & RIOT OS & Medium
-                  &  2599      & 2272     & 4871        & 53\%
-                  &  16\%      &  8\% \\
+                  &  2599      & 2272     & 4871
+                  & 53\% \\
 SkyMote/TelosB    & RIOT OS & Large
-                  &  4003      & 3872     & 7875        & 51\%
-                  &  18\%      &  9\% \\
+                  &  4003      & 3872     & 7875
+                  & 51\% \\
 \hline
 Zolertia Z1       & Contiki & Moderate
-                  &   153      & 1312     & 1465        & 10\%
-                  & 122\%      & 13\% \\
+                  &   153      & 1312     & 1465
+                  & 10\% \\
 Zolertia Z1       & Contiki & Medium
-                  &   272      & 2272     & 2544        & 11\%
-                  & 114\%      & 12\% \\
+                  &   272      & 2272     & 2544
+                  & 11\% \\
 Zolertia Z1       & Contiki & Large
-                  &   428      & 3872     & 4300        & 10\%
-                  &  95\%      &  9\% \\
+                  &   428      & 3872     & 4300
+                  & 10\% \\
 \hline
 Zolertia Z1       & RIOT OS & Moderate
-                  &  1404      & 1312     & 2716        & 52\%
-                  & 184\%      & 95\% \\
+                  &  1404      & 1312     & 2716
+                  & 52\% \\
 Zolertia Z1       & RIOT OS & Medium
-                  &  2106   & 2272        & 4378        & 48\%
-                  & 185\%      & 89\% \\
+                  &  2106   & 2272        & 4378
+                  & 48\% \\
 Zolertia Z1       & RIOT OS & Large
-                  &  3260   & 3872        & 7132        & 46\%
-                  & 181\%      & 83\% \\
+                  &  3260   & 3872        & 7132
+                  & 46\% \\
 \hline
-\multicolumn{9}{l}{All delays in this table are in microseconds.}\\
-\multicolumn{9}{l}{TX delays are computed using standard 802.15.4 rate
+\multicolumn{7}{l}{All delays in this table are in microseconds.}\\
+\multicolumn{7}{l}{TX delays are computed using standard 802.15.4 rate
 (32 $\mu$sec. per byte), with 11 bytes of overhead per packet.}\\
 \end{tabular}
 \end{table*}
+
+\medskip
 
 Moreover, since the problem seems to be caused by the emulation of
 MCUs by the MSPSim emulator, we expect the vast majority of the other
