@@ -111,7 +111,7 @@ to the present article.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{Observed Timing Inaccuracy Problem in MSPSim}
+\section{Timing Inaccuracy Problem in MSPSim}
 \label{results}
 
 When performing our own simulations with virtual networks of MSP430-based
@@ -356,17 +356,6 @@ overestimates largely the SPI delays, while the emulation of the MSP430F1611
 
 \medskip
 
-When studying COOJA's timeline view during simulations, we see that the
-TX load delay can represent up to 75\% of the total duration taken to
-send a packet, especially for large 110-byte packets. Any inaccuracy
-in the evaluation of that delay is thus bound to have strong consequences
-on the reliability of performance evaluations made with COOJA/MSPSim
-simulations.
-%% Faire une nouvelle table ?
-
-
-\medskip
-
 We thus see that whatever the software environment used, we can make the
 following constatations concerning the inaccuracy in timing for the TX buffer
 loading operation:
@@ -383,6 +372,80 @@ OS (and even more when running RIOT OS) which is not a negligible fraction.
 This just makes the time-related results obtained with COOJA/MSPSim
 simulations unreliable for performance evaluation purposes, particularly
 on Zolertia Z1, but also on the very popular SkyMote/TelosB hardware platform.
+
+\medskip
+
+When computing the relative weight of TX buffer loading in total packet
+transmission duration, we see that the TX load delay can represent up to 57\%
+of the total duration taken to send a packet, especially when running an OS
+different from Contiki. Multiplying this relative weight by the observed
+loading inaccuracy gives us the potential error for evaluating packets
+transmission delays (see Table \ref{TblTXRelWeight} for detailed results).
+We then see that this global inaccuracy percentage only keeps reasonable
+when using the standard `Contiki OS on SkyMote' setup; for other setups,
+this inaccuracy percentage is always at least in the range of 10\% of the
+global packet transmission time; when running the alternative RIOT OS
+on the Z1 hardware this value goes well above 80\%!
+Such an inaccuracy in the evaluation of packet TX delay is obviously bound
+to have strong consequences on the reliability of performance evaluations
+made with COOJA/MSPSim simulations.
+
+\begin{table*}[htbp]
+\caption{Relative Weight of TX Buffer Loading in Packet Transmission Timings.}
+\label{TblTXRelWeight}
+\centering
+
+\begin{tabular}{l|l|l|rrr|r|r|r}
+\hline
+HW Platform & WSN OS  & Pkt. Size
+                  & Load delay & TX delay & Total Delay & Load \%age
+                  & Inaccuracy & Inacc. \%age \\
+\hline
+SkyMote/TelosB    & Contiki & Moderate
+                  &   196      & 1312     & 1508        & 13\%
+                  &  11\%      &  1\% \\
+SkyMote/TelosB    & Contiki & Medium
+                  &   327      & 2272     & 2599        & 13\%
+                  &  15\%      &  2\% \\
+SkyMote/TelosB    & Contiki & Large
+                  &   549      & 3872     & 4421        & 12\%
+                  &  13\%      &  2\% \\
+\hline
+SkyMote/TelosB    & RIOT OS & Moderate
+                  &  1770      & 1312     & 3082        & 57\%
+                  &  15\%      &  9\% \\
+SkyMote/TelosB    & RIOT OS & Medium
+                  &  2599      & 2272     & 4871        & 53\%
+                  &  16\%      &  8\% \\
+SkyMote/TelosB    & RIOT OS & Large
+                  &  4003      & 3872     & 7875        & 51\%
+                  &  18\%      &  9\% \\
+\hline
+Zolertia Z1       & Contiki & Moderate
+                  &   153      & 1312     & 1465        & 10\%
+                  & 122\%      & 13\% \\
+Zolertia Z1       & Contiki & Medium
+                  &   272      & 2272     & 2544        & 11\%
+                  & 114\%      & 12\% \\
+Zolertia Z1       & Contiki & Large
+                  &   428      & 3872     & 4300        & 10\%
+                  &  95\%      &  9\% \\
+\hline
+Zolertia Z1       & RIOT OS & Moderate
+                  &  1404      & 1312     & 2716        & 52\%
+                  & 184\%      & 95\% \\
+Zolertia Z1       & RIOT OS & Medium
+                  &  2106   & 2272        & 4378        & 48\%
+                  & 185\%      & 89\% \\
+Zolertia Z1       & RIOT OS & Large
+                  &  3260   & 3872        & 7132        & 46\%
+                  & 181\%      & 83\% \\
+\hline
+\multicolumn{9}{l}{All delays in this table are in microseconds.}\\
+\multicolumn{9}{l}{TX delays are computed using standard 802.15.4 rate
+(32 $\mu$sec. per byte), with 11 bytes of overhead per packet.}\\
+\end{tabular}
+\end{table*}
 
 Moreover, since the problem seems to be caused by the emulation of
 MCUs by the MSPSim emulator, we expect the vast majority of the other
@@ -412,14 +475,12 @@ based on 802.15.4 networking.
 
 Among them, we can see that most of these papers use virtual SkyMote/TelosB
 nodes like
-\cite{Constrain-Routing-Trees-2014}, \cite{Contiki-RPL-Eval-2014},
+\cite{Constrain-Routing-Trees-2014},
 \cite{Co-RPL-2014}, \cite{DINAS-2014},
 \cite{Efficient-Distrib-Svc-Discovery-2014},
 \cite{IETF-Routing-WSN-2014},
 \cite{TinySDN-2014}, \cite{Trickle-L2-2014},
-\cite{Visual-Sensor-Networks-2014},
-and \cite{RPL-GreenHouse-Convgc-Time-2014} (the latter also provides
-MATLAB results, but no actual experimental data);
+and \cite{Visual-Sensor-Networks-2014};
 while some other use different, specific MSP430-based motes
 (e.g.: EXP5438 for \cite{Key-Mgmt-2015}, or WisMote for
 \cite{Lightweight-Multicast-Forwarding-2014}) whose sensibility
@@ -433,9 +494,9 @@ to be less sensible to simulation inaccuracies.
 
 Almost all of these papers present work related to high layers of
 WSN network stacks, especially routing protocols (like
-\cite{Constrain-Routing-Trees-2014}, \cite{Contiki-RPL-Eval-2014},
+\cite{Constrain-Routing-Trees-2014},
 \cite{Co-RPL-2014}, \cite{IETF-Routing-WSN-2014},
-\cite{Trickle-L2-2014}, and \cite{RPL-GreenHouse-Convgc-Time-2014})
+and \cite{Trickle-L2-2014})
 or application-level protocols (e.g.: \cite{DINAS-2014},
 \cite{Efficient-Distrib-Svc-Discovery-2014},
 \cite{Visual-Sensor-Networks-2014}, and \cite{Key-Mgmt-2015}).
