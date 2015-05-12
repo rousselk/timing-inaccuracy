@@ -24,14 +24,14 @@ K\'evin~Roussel, Ye-Qiong~Song and Olivier~Zendra%\\
 \hyphenation{MSP-Sim}
 
 \begin{abstract}
-The COOJA/MSPSim network simulation framework is currently widely used
-for developing and debugging, but also for performance evaluation
-of WSN projects.
+The COOJA/MSPSim network simulation framework is widely used for developing
+and debugging, but also for performance evaluation of WSN projects.
 
 When performing our own simulations with COOJA and MSPSim, we observed timing
 inconsistencies with identical experimentations made on actual hardware.
 Such inaccuracies clearly impair the use of the COOJA/MSPSim framework as
-an evaluation tool, at least for time-related results.
+a performance evaluation tool, at least for time-related performance
+parameters.
 
 We will present in this paper, as our contributions, the detailed results of
 our investigations on, as well as the consequences of this issue,
@@ -88,7 +88,7 @@ TelosB/SkyMote family, or to Zolertia's Z1 platform.
 We searched the literature, but we found no article related to any reported
 inaccuracy in COOJA or MSPSim.
 
-In the following paper, after the brief reminder about COOJA/MSPSim in the
+In this paper, after the brief reminder about COOJA/MSPSim in the
 present section~\ref{introduction}, our contributions will firstly
 consist---in section~\ref{results}---in a detailed description of this
 timing inaccuracy problem, using a significant set of comparisons between
@@ -130,18 +130,19 @@ data packets of various sizes, chosen amongst:
 \item \emph{large} size, with a payload of 110 bytes (that is:
       near the maximum size for IEEE 802.15.4 packets\footnotemark[1]).
 \end{itemize}
-\footnotetext[1]{IEEE 802.15.4 is the standard defining the physical
-layer (PHY) that the involved  WSN nodes communicate on. The maximum
-total size for 802.15.4 packets is 127 bytes.}
+\footnotetext[1]{The maximum total size for IEEE 802.15.4 packets
+is 127 bytes.}
 The actually transmitted packet have 11 bytes of overhead (headers and
 checksum) beyond their payload.
 
-This program sends consecutively 50 packets of the chosen size for each run:
-we thus computed the mean $\mu$ and standard deviation $\sigma$ for such
-a group of 50 packets for each setup. The measured value is the duration
-or ``delay'' taken to load one of these packets into the TX buffer of
-the radio transceiver. Many runs have been executed for each setup
-to ensure the stability of the observed results.
+This program sends consecutively 50 packets of the chosen size, at the rate
+of 1 packet per second, for each run: we thus computed the mean $\mu$ and
+standard deviation $\sigma$ for such a group of 50 packets for each setup.
+The measured value is the duration or ``delay'' taken to load one of these
+packets into the TX buffer of the radio transceiver.
+
+In addition, many runs have been executed for each setup, so we verify
+the stability of the results.
 
 It has been compiled for, and run on the following hardware platforms:
 \begin{itemize}
@@ -152,7 +153,7 @@ Both devices have the same CC2420 radio transceiver.
 
 These values are given for different operating systems---the well-known
 Contiki OS, as well as the more recent RIOT OS~\cite{RIOT} which is also
-specialized in WSN---as well as for two kind of SPI drivers:
+specialized in WSN---as well as for two kinds of SPI drivers:
 \begin{itemize}
 \item a standard SPI model, which waits for every transmitted byte to be
 validated by the hardware SPI interface before sending the next one:
@@ -174,7 +175,7 @@ SPI model, and thus obtained an additional setup for our tests.
 The results of the comparison between execution on simulated motes
 in COOJA/MSPSim and on physical hardware are shown in
 Table~\ref{TblTXPktLoadDelaysSkyTelosB} for SkyMote/TelsoB hardware,
-and in Table~{TblTXPktLoadDelaysZ1} for Zolertia Z1 hardware.
+and in Table~\ref{TblTXPktLoadDelaysZ1} for Zolertia Z1 hardware.
 
 Note that in both tables, delay values are given in ``ticks'' of timers
 incrementing at a rate of 32,768~Hz. The unit is thus a fixed period of
@@ -182,9 +183,9 @@ time equal to about 30.5~microseconds.
 
 
 \newcommand{\tabtitle}[1]{\multicolumn{8}{c}{\bfseries #1}}
-\newcommand{\ticks}[1]{#1 t.}
-\newcommand{\moy}[1]{$\mu=$ \ticks{#1}}
-\newcommand{\ect}[1]{$\sigma=$ \ticks{#1}}
+\newcommand{\ticks}[1]{#1 ticks}
+\newcommand{\moy}[1]{#1}
+\newcommand{\ect}[1]{#1}
 \newcommand{\estus}[1]{($\approx$ #1 $\mu$sec.)}
 \newcommand{\prctv}[1]{$\approx$ #1\% exp. value}
 
@@ -197,8 +198,8 @@ of a SkyMote/TelosB Mote, Using Various Software Setups.}
 \begin{tabular}{l|rr|rr|rcl}
 \tabtitle{Results with Contiki OS}\\
 \hline
-Pkt. Size & \multicolumn{2}{c|}{Cooja Simulation}
-          & \multicolumn{2}{c|}{Hardware Experiment}
+Pkt. Size & \multicolumn{2}{c|}{Cooja Simulation (ticks)}
+          & \multicolumn{2}{c|}{Hardware Experiment (ticks)}
           & \multicolumn{3}{c}{Mean Difference} \\
 \hline
  Moderate & \moy{6.4} & \ect{0.50} & \moy{7.2} & \ect{0.40}
@@ -215,8 +216,8 @@ Pkt. Size & \multicolumn{2}{c|}{Cooja Simulation}
 \begin{tabular}{l|rr|rr|rcl}
 \tabtitle{Results with RIOT OS (standard ``safe'' SPI driver)}\\
 \hline
-Pkt. Size & \multicolumn{2}{c|}{Cooja Simulation}
-          & \multicolumn{2}{c|}{Hardware Experiment}
+Pkt. Size & \multicolumn{2}{c|}{Cooja Simulation (ticks)}
+          & \multicolumn{2}{c|}{Hardware Experiment (ticks)}
           & \multicolumn{3}{c}{Mean Difference} \\
 \hline
  Moderate & \moy{58.0} & \ect{0.00} & \moy{50.3} & \ect{0.46}
@@ -233,8 +234,8 @@ Pkt. Size & \multicolumn{2}{c|}{Cooja Simulation}
 \begin{tabular}{l|rr|rr|rcl}
 \tabtitle{Results with RIOT OS \emph{and} modified ``fast'' SPI writes}\\
 \hline
-Pkt. Size & \multicolumn{2}{c|}{Cooja Simulation}
-          & \multicolumn{2}{c|}{Hardware Experiment}
+Pkt. Size & \multicolumn{2}{c|}{Cooja Simulation (ticks)}
+          & \multicolumn{2}{c|}{Hardware Experiment (ticks)}
           & \multicolumn{3}{c}{Mean Difference} \\
 \hline
  Moderate & \moy{39.2} & \ect{0.39} & \moy{38.4} & \ect{0.49}
@@ -245,7 +246,11 @@ Pkt. Size & \multicolumn{2}{c|}{Cooja Simulation}
           & \ticks{1.0}  & \estus{31} & \prctv{1} \\
 \hline
 \end{tabular}
-
+\\
+\ \\
+Note: the ``Cooja Simulation'' and ``Hardware Experiment'' columns contain
+the observed mean (left) and standard deviation (right) observed for each
+setup.
 \end{table*}
 
 
@@ -258,8 +263,8 @@ of a Zolertia Z1 Mote, Using Various Software Setups.}
 \begin{tabular}{l|rr|rr|rcl}
 \tabtitle{Results with Contiki OS}\\
 \hline
-Pkt. Size & \multicolumn{2}{c|}{Cooja Simulation}
-          & \multicolumn{2}{c|}{Hardware Experiment}
+Pkt. Size & \multicolumn{2}{c|}{Cooja Simulation (ticks)}
+          & \multicolumn{2}{c|}{Hardware Experiment (ticks)}
           & \multicolumn{3}{c}{Mean Difference} \\
 \hline
  Moderate & \moy{5.0} & \ect{0.14} & \moy{2.3} & \ect{0.44}
@@ -276,8 +281,8 @@ Pkt. Size & \multicolumn{2}{c|}{Cooja Simulation}
 \begin{tabular}{l|rr|rr|rcl}
 \tabtitle{Results with RIOT OS (standard ``safe'' SPI driver)}\\
 \hline
-Pkt. Size & \multicolumn{2}{c|}{Cooja Simulation}
-          & \multicolumn{2}{c|}{Hardware Experiment}
+Pkt. Size & \multicolumn{2}{c|}{Cooja Simulation (ticks)}
+          & \multicolumn{2}{c|}{Hardware Experiment (ticks)}
           & \multicolumn{3}{c}{Mean Difference} \\
 \hline
  Moderate & \moy{46.0} & \ect{0.00} & \moy{16.2} & \ect{0.39}
@@ -294,8 +299,8 @@ Pkt. Size & \multicolumn{2}{c|}{Cooja Simulation}
 \begin{tabular}{l|rr|rr|rcl}
 \tabtitle{Results with RIOT OS \emph{and} modified ``fast'' SPI writes}\\
 \hline
-Pkt. Size & \multicolumn{2}{c|}{Cooja Simulation}
-          & \multicolumn{2}{c|}{Hardware Experiment}
+Pkt. Size & \multicolumn{2}{c|}{Cooja Simulation (ticks)}
+          & \multicolumn{2}{c|}{Hardware Experiment (ticks)}
           & \multicolumn{3}{c}{Mean Difference} \\
 \hline
  Moderate & \moy{27.0} & \ect{0.00} & \moy{10.0} & \ect{0.00}
@@ -306,8 +311,6 @@ Pkt. Size & \multicolumn{2}{c|}{Cooja Simulation}
           & \ticks{30.8} & \estus{941} & \prctv{170} \\
 \hline
 \end{tabular}
-\\
-\ \\
 
 \end{table*}
 
@@ -329,7 +332,7 @@ thus hard to estimate and correct without a comparison with experimentation
 on actual hardware.
 \end{itemize}
 
-With the modified RIOT OS setup, we can see that:
+With the modified RIOT OS setup (``fast SPI''), we can see that:
 \begin{itemize}
 \item there is absolutely no accuracy improvement for the Z1 platform,
 the timing results obtained are still overestimated by about 170\% of
@@ -350,7 +353,7 @@ overestimates largely the SPI delays, while the emulation of the MSP430F1611
 \medskip
 
 We thus see that whatever the software environment used, we can make the
-following constatations concerning the inaccuracy in timing for the TX buffer
+following observations about the inaccuracy in timing for the TX buffer
 loading operation:
 \begin{itemize}
 \item for the Zolertia Z1 hardware platform, this inaccuracy is just huge:
@@ -384,10 +387,9 @@ made with COOJA/MSPSim simulations.
 
 \begin{tabular}{l|l|l|r|r|r|r}
 \hline
-\hline
 HW Platform & WSN OS  & Pkt. Size
-                  & Load delay & TX delay & Total Delay
-                  & Load / Total (percentage) \\
+                  & Loading delay & TX delay & Total Delay
+                  & Loading / Total (percentage) \\
 \hline
 SkyMote/TelosB    & Contiki & Moderate
                   &   196      & 1312     & 1508
@@ -476,13 +478,13 @@ while some other use different, specific MSP430-based motes
 \cite{Lightweight-Multicast-Forwarding-2014}) whose sensibility
 to the present inaccuracy problem is unknown to us.
 
-We also saw one paper that rely on both simulations and experimental
+We also saw one paper that relies on both simulations and experimental
 results for timing-related performance evaluations: we especially found
 \cite{Probing-Mech-wu-2015}, which also presents purely numerical,
 MATLAB-produced results. We expect such articles, (much) less common,
 to be less sensible to simulation inaccuracies.
 
-Almost all of these papers present work related to high layers of
+Almost all of these papers present work related to higher layers of
 WSN network stacks, especially routing protocols (like
 \cite{Constrain-Routing-Trees-2014},
 \cite{Co-RPL-2014}, \cite{IETF-Routing-WSN-2014},
