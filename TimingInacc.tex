@@ -138,12 +138,12 @@ The actually transmitted packet have 11 bytes of overhead (headers and
 checksum) beyond their payload.
 
 This program sends consecutively 50 packets of the chosen size, at the rate
-of 1 packet per second, for each run: we thus computed the mean $\mu$ and
-standard deviation $\sigma$ for such a group of 50 packets for each setup.
+of 1 packet per second, for each run: we thus computed the mean and
+standard deviation for such a group of 50 packets for each setup.
 The measured value is the duration or ``delay'' taken to load one of these
 packets into the TX buffer of the radio transceiver.
 
-In addition, many runs have been executed for each setup, so we verify
+In addition, many runs have been executed for each setup, so as to verify
 the stability of the results.
 
 It has been compiled for, and run on the following hardware platforms:
@@ -558,6 +558,7 @@ more easily thanks to its emulation features.
 
 %\vfill
 \bibliographystyle{IEEEtran}
+\IEEEtriggeratref{2}  %% pour l'égalisation des colonnes sur la dernière page
 {\small
 \bibliography{TimingInacc}}
 
