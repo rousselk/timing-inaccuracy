@@ -191,7 +191,7 @@ time equal to about 30.5~microseconds.
 \newcommand{\estus}[1]{($\approx$ #1 $\mu$sec.)}
 \newcommand{\prctv}[1]{$\approx$ #1\% exp. value}
 
-\begin{table*}[htbp]
+\begin{table*}[htb]
 \caption{Delays Observed for Loading One Packet into CC2420 TX Buffer
 of a SkyMote/TelosB Mote, Using Various Software Setups.}
 \label{TblTXPktLoadDelaysSkyTelosB}
@@ -203,6 +203,8 @@ of a SkyMote/TelosB Mote, Using Various Software Setups.}
 Pkt. Size & \multicolumn{2}{c|}{Cooja Simulation (ticks)}
           & \multicolumn{2}{c|}{Hardware Experiment (ticks)}
           & \multicolumn{3}{c}{Mean Difference} \\
+\hline
+          & Mean & Std. Dev. & Mean & Std. Dev. & \\
 \hline
  Moderate & \moy{6.4} & \ect{0.50} & \moy{7.2} & \ect{0.40}
           & \ticks{--0.8}  & \estus{24} & \prctv{11} \\
@@ -222,6 +224,8 @@ Pkt. Size & \multicolumn{2}{c|}{Cooja Simulation (ticks)}
           & \multicolumn{2}{c|}{Hardware Experiment (ticks)}
           & \multicolumn{3}{c}{Mean Difference} \\
 \hline
+          & Mean & Std. Dev. & Mean & Std. Dev. & \\
+\hline
  Moderate & \moy{58.0} & \ect{0.00} & \moy{50.3} & \ect{0.46}
           & \ticks{7.7}  & \estus{235} & \prctv{15} \\
  Medium   & \moy{85.2} & \ect{0.39} & \moy{73.6} & \ect{0.50}
@@ -240,6 +244,8 @@ Pkt. Size & \multicolumn{2}{c|}{Cooja Simulation (ticks)}
           & \multicolumn{2}{c|}{Hardware Experiment (ticks)}
           & \multicolumn{3}{c}{Mean Difference} \\
 \hline
+          & Mean & Std. Dev. & Mean & Std. Dev. & \\
+\hline
  Moderate & \moy{39.2} & \ect{0.39} & \moy{38.4} & \ect{0.49}
           & \ticks{0.8}  & \estus{24} & \prctv{2} \\
  Medium   & \moy{53.2} & \ect{0.39} & \moy{52.8} & \ect{0.40}
@@ -248,15 +254,11 @@ Pkt. Size & \multicolumn{2}{c|}{Cooja Simulation (ticks)}
           & \ticks{1.0}  & \estus{31} & \prctv{1} \\
 \hline
 \end{tabular}
-\\
-\ \\
-Note: the ``Cooja Simulation'' and ``Hardware Experiment'' columns contain
-the observed mean (left) and standard deviation (right) observed for each
-setup.
+
 \end{table*}
 
 
-\begin{table*}[htbp]
+\begin{table*}[htb]
 \caption{Delays Observed for Loading One Packet into CC2420 TX Buffer
 of a Zolertia Z1 Mote, Using Various Software Setups.}
 \label{TblTXPktLoadDelaysZ1}
@@ -268,6 +270,8 @@ of a Zolertia Z1 Mote, Using Various Software Setups.}
 Pkt. Size & \multicolumn{2}{c|}{Cooja Simulation (ticks)}
           & \multicolumn{2}{c|}{Hardware Experiment (ticks)}
           & \multicolumn{3}{c}{Mean Difference} \\
+\hline
+          & Mean & Std. Dev. & Mean & Std. Dev. & \\
 \hline
  Moderate & \moy{5.0} & \ect{0.14} & \moy{2.3} & \ect{0.44}
           & \ticks{2.8}  & \estus{84} & \prctv{122} \\
@@ -287,6 +291,8 @@ Pkt. Size & \multicolumn{2}{c|}{Cooja Simulation (ticks)}
           & \multicolumn{2}{c|}{Hardware Experiment (ticks)}
           & \multicolumn{3}{c}{Mean Difference} \\
 \hline
+          & Mean & Std. Dev. & Mean & Std. Dev. & \\
+\hline
  Moderate & \moy{46.0} & \ect{0.00} & \moy{16.2} & \ect{0.39}
           & \ticks{29.8}  & \estus{910} & \prctv{184} \\
  Medium   & \moy{69.0} & \ect{0.00} & \moy{24.2} & \ect{0.39}
@@ -304,6 +310,8 @@ Pkt. Size & \multicolumn{2}{c|}{Cooja Simulation (ticks)}
 Pkt. Size & \multicolumn{2}{c|}{Cooja Simulation (ticks)}
           & \multicolumn{2}{c|}{Hardware Experiment (ticks)}
           & \multicolumn{3}{c}{Mean Difference} \\
+\hline
+          & Mean & Std. Dev. & Mean & Std. Dev. & \\
 \hline
  Moderate & \moy{27.0} & \ect{0.00} & \moy{10.0} & \ect{0.00}
           & \ticks{17.0} & \estus{519} & \prctv{170} \\
@@ -558,7 +566,6 @@ more easily thanks to its emulation features.
 
 %\vfill
 \bibliographystyle{IEEEtran}
-\IEEEtriggeratref{2}  %% pour l'égalisation des colonnes sur la dernière page
 {\small
 \bibliography{TimingInacc}}
 
