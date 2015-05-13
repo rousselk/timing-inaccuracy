@@ -90,7 +90,7 @@ TelosB/SkyMote family, or to Zolertia's Z1 platform.
 We searched the literature, but we found no article related to any reported
 inaccuracy in COOJA or MSPSim.
 
-In this paper, after the brief reminder about COOJA/MSPSim in the
+In this paper, after the brief reminder about COOJA and MSPSim in the
 present section~\ref{introduction}, our contributions will firstly
 consist---in section~\ref{results}---in a detailed description of this
 timing inaccuracy problem, using a significant set of comparisons between
@@ -116,7 +116,7 @@ unexplained delays during packet transmission (TX) over the radio medium,
 that weren't observed during similar experiences on physical motes.
 We then investigated the problem, and discovered the following results.
 
-The problem is with the emulation of radio-enabled, MSP430-powered WSN
+The problem is with the emulation of MSP430-powered, radio-enabled WSN
 devices (a.k.a. ``motes'') by the MSPSim software package.
 
 The differences appear on one peculiar operation: when loading packet data
@@ -375,7 +375,7 @@ senses: under-estimation or over-estimation of the actual delay on hardware.
 Moreover, this inaccuracy can go up to 15\% of the real value with Contiki
 OS (and even more when running RIOT OS) which is not a negligible fraction.
 \end{itemize}
-This just makes the time-related results obtained with COOJA/MSPSim
+This just makes the time-related results obtained with COOJA/ MSPSim
 simulations unreliable for performance evaluation purposes, particularly
 on Zolertia Z1, but also on the very popular SkyMote/TelosB hardware platform.
 
