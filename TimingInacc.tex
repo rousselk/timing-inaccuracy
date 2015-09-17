@@ -130,10 +130,8 @@ data packets of various sizes, chosen amongst:
 \item \emph{moderate} size, with a payload of 30 bytes;
 \item \emph{medium} size, with a payload of 60 bytes;
 \item \emph{large} size, with a payload of 110 bytes (that is:
-      near the maximum size for IEEE 802.15.4 packets\footnotemark[1]).
+      near the maximum size of 127 bytes for IEEE 802.15.4 packets).
 \end{itemize}
-\footnotetext[1]{The maximum total size for IEEE 802.15.4 packets
-is 127 bytes.}
 The actually transmitted packet have 11 bytes of overhead (headers and
 checksum) beyond their payload.
 
@@ -360,6 +358,10 @@ the emulation of the MSP430F2617 (the MCU powering the Z1 mote) just
 overestimates largely the SPI delays, while the emulation of the MSP430F1611
 (from SkyMote/TelosB) performs better on that aspect.
 
+We can suppose that the MSPSim software has probably been finely tuned for
+MSP430F1611 emulation~--- especially for timing calibrations~---, while
+MSP430F2617 emulation has been less tested.
+
 \medskip
 
 We thus see that whatever the software environment used, we can make the
@@ -509,7 +511,7 @@ Some can even present alternate network stacks (\cite{TinySDN-2014}).
 Such studies, which rely on COOJA/MSPSim emulation runs to evaluate
 time-related performance on WSN, have a (potentially high) risk of
 suffering from inexact results due to the timing inaccuracy described
-hereabove, which may go from moderate bias up to critical errors;
+hereabove, which may go from moderate up to critical bias.
 in the latter case, the issue obviously goes as far as putting
 the discussions and conclusions of these papers in jeopardy.
 
@@ -545,7 +547,7 @@ Until a fix is made and published to correct this timing inaccuracy
 in the MSPSim emulator, we believe the only way to get robust and reliable
 results concerning timing and time-related performance evaluation is
 to perform tests on actual hardware, which will eliminate any bias
-that can be introduced by errors or inaccuracies in simulation.
+that can be introduced by inaccuracies in simulation.
 
 Of course, such hardware tests are much more difficult, long and
 costly to prepare, run and analyze.
