@@ -1,18 +1,34 @@
-\documentclass[11pt,final,journal,twocolumn]{IEEEtran}
-%\documentclass[12pt,draftclsnofoot,journal,onecolumn]{IEEEtran}
+\documentclass[10pt]{ewsn-proc}
 
 \usepackage[T1]{fontenc}
+\usepackage{balance}
+\usepackage{comment}
+
+\numberofauthors{3}
+\author{
+\alignauthor K\'evin Roussel \\
+        \affaddr{INRIA Nancy Grand-Est}\\
+        \affaddr{615, rue du Jardin Botanique}\\
+        \affaddr{54600 Villers-l\`es-Nancy, France}
+       \email{kevin.roussel@inria.fr}
+\alignauthor Ye-Qiong Song \\
+        \affaddr{LORIA/INRIA Nancy Grand-Est}\\
+        \affaddr{615, rue du Jardin Botanique}\\
+        \affaddr{54600 Villers-l\`es-Nancy, France}
+       \email{ye-qiong.song@loria.fr}
+\alignauthor Olivier Zendra \\
+        \affaddr{INRIA Nancy Grand-Est}\\
+        \affaddr{615, rue du Jardin Botanique}\\
+        \affaddr{54600 Villers-l\`es-Nancy, France}
+       \email{olivier.zendra@inria.fr}
+}
 
 \title{Timing Inaccuracy in MSPSim Emulator: Consequences on COOJA Simulations}
-\author{
-K\'evin~Roussel, Ye-Qiong~Song and Olivier~Zendra\\
-LORIA/INRIA Nancy Grand-Est,\\
-Universit\'e de Lorraine,\\
-615, rue du Jardin Botanique,\\
-54600 Villers-l\`es-Nancy, France\\
-\texttt{\{Kevin.Roussel,Ye-Qiong.Song,Olivier.Zendra\}@inria.fr}
-}
-\date{}
+% Short paper for the NextMote workshop
+
+\conferenceinfo{EWSN'16, NextMote Workshop} {February 15--17, 2016, Graz, Austria.}
+\CopyrightYear{2015}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%                               80 COLONNES                                %%%
@@ -566,7 +582,9 @@ more easily thanks to its emulation features.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %\vfill
-\bibliographystyle{IEEEtran}
+\balance
+\bibliographystyle{abbrv}
 \bibliography{TimingInacc}
 
 \end{document}
+
