@@ -2,7 +2,6 @@
 
 \usepackage[T1]{fontenc}
 \usepackage{balance}
-\usepackage{comment}
 
 \numberofauthors{3}
 \author{
@@ -24,9 +23,10 @@
 }
 
 \title{Timing Inaccuracy in MSPSim Emulator: Consequences on COOJA Simulations}
-% Short paper for the NextMote workshop
 
-\conferenceinfo{EWSN'16, NextMote Workshop} {February 15--17, 2016, Graz, Austria.}
+% Short paper for the NextMote workshop
+\conferenceinfo{EWSN'16---NextMote Workshop}
+               {February 15--17, 2016, Graz, Austria.}
 \CopyrightYear{2015}
 
 
@@ -204,6 +204,7 @@ time equal to about 30.5~microseconds.
 \newcommand{\estus}[1]{($\approx$ #1 $\mu$sec.)}
 \newcommand{\prctv}[1]{$\approx$ #1\% exp. value}
 
+
 \begin{table*}[htb]
 \caption{Delays Observed for Loading One Packet into CC2420 TX Buffer
 of a SkyMote/TelosB Mote, Using Various Software Setups.}
@@ -336,6 +337,7 @@ Pkt. Size & \multicolumn{2}{c|}{Cooja Simulation (ticks)}
 \end{tabular}
 
 \end{table*}
+
 
 \medskip
 
@@ -475,11 +477,15 @@ impacted by this problem, at various levels.
 Consequently, we believe that users of such devices should perform their
 own tests to evaluate the possible inaccuracy and its impact on their work.
 To help in that matter, we freely provide the programs we used to perform the
-present work at the following URL.
+present work at the following URL:
+
+\smallskip
 
 \begin{center}
-\texttt{\footnotesize https://github.com/rousselk/tim-inacc-tst-prg}
+\texttt{https://github.com/rousselk/tim-inacc-tst-prg}
 \end{center}
+
+\bigskip
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -581,7 +587,6 @@ more easily thanks to its emulation features.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%\vfill
 \balance
 \bibliographystyle{abbrv}
 \bibliography{TimingInacc}
