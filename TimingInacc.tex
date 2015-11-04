@@ -58,8 +58,54 @@ and give possible leads to fix or avoid it.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{COOJA and MSPSim}
+\section{Introduction}
 \label{introduction}
+
+The research on Wireless Sensor Networks (WSN) and Internet of Things (IoT)
+often resorts to simulation and/or emulation tools. It is indeed often
+difficult to have enough devices (or ``nodes'' or ``motes'' as one might
+call them) to perform the large-size tests often needed in this domain;
+especially when these ``motes'' need to be instrumented to return enough
+useful information to design, evaluate or debug projects based on this
+kind of technology.
+
+Thus, the development of innovative, ambitious projects such as those
+that are the focus of the \emph{NextMote} workshop will surely need
+such simulation/emulation tools, at least for the first steps of design
+and test of new technologies, since the number of involved devices is
+deemed to grow exponentially (for example: smart dusts, seeds or pollens),
+and thus testing such a lot of miniaturized devices may be more and more
+difficult.
+
+Currently, one of the most used simulation/emulation tool used in the
+WSN/IoT domain is the COOJA Framework, which includes the MSPSim and
+Avrora software to perform cycle-exact emulation of ``motes''.
+
+The subject of the present paper are the result inaccuracies we discovered
+while using the COOJA simulator for testing our own WSN-based projects.
+Since COOJA is widely used, especially for evaluating performances of
+WSN or IoT-based projects, such inaccuracies may have strong
+consequences on the validity of the many publications making
+use of this framework.
+
+In this paper, after the brief reminder about COOJA and MSPSim in the
+next section~\ref{coojaMspsim}, our contributions will firstly
+consist---in section~\ref{results}---in a detailed description of this
+timing inaccuracy problem, using a significant set of comparisons between
+simulations and experimentations on hardware; we will then use these results
+to provide clues about the origin of this issue, and possible means to fix
+or avoid it.
+Then in section~\ref{consequences} we will see its consequences on current
+WSN literature, in terms of robustness and reliability of the articles
+relying on such simulations. Finally, in section~\ref{conclusion}
+we will draw some conclusions from all of these contributions as an end
+to the present article.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{COOJA and MSPSim}
+\label{coojaMspsim}
 
 Provided by the Contiki OS project~\cite{ContikiOS}, the COOJA network
 simulator~\cite{Cooja} has become a widely used tool in the domain of
@@ -82,6 +128,7 @@ of sensor networks;
 \item an extensible framework, which allows integration of external tools
 to provide additional features to the COOJA application.
 \end{enumerate}
+
 This last feature is used to allow COOJA to actually emulate the various
 motes constituting the WSNs. It indeed embeds and uses dedicated emulator
 programs that perform cycle-accurate emulation of the chips with which motes
@@ -94,8 +141,12 @@ for debugging and evaluating WSN-related software (which happens to be
 often based on Contiki OS).
 
 Current versions of COOJA make use of two different emulator software
-packages: Avrora for emulation of Atmel AVR-based devices, and
-MSPSim~\cite{MSPSim} for emulation of TI MSP430-based devices.
+packages: Avrora~\cite{Avrora} for emulation of Atmel AVR-based devices,
+and MSPSim~\cite{MSPSim} for emulation of TI MSP430-based devices.
+(Also note that in the future, the structure of COOJA would allow it
+to include more emulators, dedicated to other architectures: one might
+especially think to the ARM Cortex-M architecture which is more and
+more used in ``motes'' and other embedded devices).
 
 Of these two emulators, MSPSim is currently the most used in literature
 including COOJA-based simulations, since motes based on MSP430 MCUs are
@@ -104,19 +155,6 @@ TelosB/SkyMote family, or to Zolertia's Z1 platform.
 
 We searched the literature, but we found no article related to any reported
 inaccuracy in COOJA or MSPSim.
-
-In this paper, after the brief reminder about COOJA and MSPSim in the
-present section~\ref{introduction}, our contributions will firstly
-consist---in section~\ref{results}---in a detailed description of this
-timing inaccuracy problem, using a significant set of comparisons between
-simulations and experimentations on hardware; we will then use these results
-to provide clues about the origin of this issue, and possible means to fix
-or avoid it.
-Then in section~\ref{consequences} we will see its consequences on current
-WSN literature, in terms of robustness and reliability of the articles
-relying on such simulations. Finally, in section~\ref{conclusion}
-we will draw some conclusions from all of these contributions as an end
-to the present article.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -147,6 +185,9 @@ data packets of various sizes, chosen amongst:
 \item \emph{large} size, with a payload of 110 bytes (that is:
       near the maximum size of 127 bytes for IEEE 802.15.4 packets).
 \end{itemize}
+
+\smallskip
+
 The actually transmitted packet have 11 bytes of overhead (headers and
 checksum) beyond their payload.
 
@@ -164,7 +205,12 @@ It has been compiled for, and run on the following hardware platforms:
 \item the well-known SkyMote/TelosB mote, powered by a MSP430F1611 MCU;
 \item the more recent Zolertia Z1 mote powered by a MSP430 F2617 MCU.
 \end{itemize}
+
+\smallskip
+
 Both devices have the same CC2420 radio transceiver.
+
+\medskip
 
 These values are given for different operating systems---the well-known
 Contiki OS, as well as the more recent RIOT OS~\cite{RIOT} which is also
@@ -183,9 +229,13 @@ for faster writes on the SPI bus, it makes transfers---at least in
 theory---less reliable.
 \end{itemize}
 
+\medskip
+
 For completing the results obtained with default SPI drivers for both OSes,
 we modified the RIOT OS SPI driver to make it use the ``fast write''
 SPI model, and thus obtained an additional setup for our tests.
+
+\medskip
 
 The results of the comparison between execution on simulated motes
 in COOJA/MSPSim and on physical hardware are shown in
@@ -357,6 +407,8 @@ thus hard to estimate and correct without a comparison with experimentation
 on actual hardware.
 \end{itemize}
 
+\bigskip
+
 With the modified RIOT OS setup (``fast SPI''), we can see that:
 \begin{itemize}
 \item there is absolutely no accuracy improvement for the Z1 platform,
@@ -394,6 +446,9 @@ senses: under-estimation or over-estimation of the actual delay on hardware.
 Moreover, this inaccuracy can go up to 15\% of the real value with Contiki
 OS (and even more when running RIOT OS) which is not a negligible fraction.
 \end{itemize}
+
+\bigskip
+
 This just makes the time-related results obtained with COOJA/ MSPSim
 simulations unreliable for performance evaluation purposes, particularly
 on Zolertia Z1, but also on the very popular SkyMote/TelosB hardware platform.
@@ -511,11 +566,15 @@ while some other use different, specific MSP430-based motes
 \cite{Lightweight-Multicast-Forwarding-2014}) whose sensibility
 to the present inaccuracy problem is unknown to us.
 
+\smallskip
+
 We also saw one paper that relies on both simulations and experimental
 results for timing-related performance evaluations: we especially found
 \cite{Probing-Mech-wu-2015}, which also presents purely numerical,
 MATLAB-produced results. We expect such articles, (much) less common,
 to be less sensible to simulation inaccuracies.
+
+\smallskip
 
 Almost all of these papers present work related to higher layers of
 WSN network stacks, especially routing protocols (like
@@ -527,7 +586,7 @@ or application-level protocols (e.g.: \cite{DINAS-2014},
 \cite{Visual-Sensor-Networks-2014}, and \cite{Key-Mgmt-2015}).
 Some can even present alternate network stacks (\cite{TinySDN-2014}).
 
-\medskip
+\bigskip
 
 Such studies, which rely on COOJA/MSPSim emulation runs to evaluate
 time-related performance on WSN, have a (potentially high) risk of
