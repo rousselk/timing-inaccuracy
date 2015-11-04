@@ -22,7 +22,7 @@
        \email{olivier.zendra@inria.fr}
 }
 
-\title{Using COOJA for WSN Simulations: Some New Uses and Limits}
+\title{Using Cooja for WSN Simulations: Some New Uses and Limits}
 
 % Short paper for the NextMote workshop
 \conferenceinfo{EWSN'16---NextMote Workshop}
@@ -41,12 +41,12 @@
 \hyphenation{MSP-Sim}
 
 \begin{abstract}
-The COOJA/MSPSim network simulation framework is widely used for developing
+The Cooja/MSPSim network simulation framework is widely used for developing
 and debugging, but also for performance evaluation of WSN projects.
 
-When performing our own simulations with COOJA and MSPSim, we observed timing
+When performing our own simulations with Cooja and MSPSim, we observed timing
 inconsistencies with identical experimentations made on actual hardware.
-Such inaccuracies clearly impair the use of the COOJA/MSPSim framework as
+Such inaccuracies clearly impair the use of the Cooja/MSPSim framework as
 a performance evaluation tool, at least for time-related performance
 parameters.
 
@@ -78,17 +78,17 @@ and thus testing such a lot of miniaturized devices may be more and more
 difficult.
 
 Currently, one of the most used simulation/emulation tool used in the
-WSN/IoT domain is the COOJA Framework, which includes the MSPSim and
+WSN/IoT domain is the Cooja Framework, which includes the MSPSim and
 Avrora software to perform cycle-exact emulation of ``motes''.
 
 The subject of the present paper are the result inaccuracies we discovered
-while using the COOJA simulator for testing our own WSN-based projects.
-Since COOJA is widely used, especially for evaluating performances of
+while using the Cooja simulator for testing our own WSN-based projects.
+Since Cooja is widely used, especially for evaluating performances of
 WSN or IoT-based projects, such inaccuracies may have strong
 consequences on the validity of the many publications making
 use of this framework.
 
-In this paper, after the brief reminder about COOJA and MSPSim in the
+In this paper, after the brief reminder about Cooja and MSPSim in the
 next section~\ref{coojaMspsim}, our contributions will firstly
 consist---in section~\ref{results}---in a detailed description of this
 timing inaccuracy problem, using a significant set of comparisons between
@@ -104,10 +104,10 @@ to the present article.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{COOJA and MSPSim}
+\section{Cooja and MSPSim}
 \label{coojaMspsim}
 
-Provided by the Contiki OS project~\cite{ContikiOS}, the COOJA network
+Provided by the Contiki OS project~\cite{ContikiOS}, the Cooja network
 simulator~\cite{Cooja} has become a widely used tool in the domain of
 Wireless Sensor Networks (WSN). The research community especially uses
 it extensively to perform simulations of small to relatively large wireless
@@ -119,42 +119,42 @@ The use of simulations is especially useful for performing virtual runs
 on large sensor networks, comprising a large number of motes that would
 be difficult, long and costly to operate with actual hardware.
 
-COOJA itself is a Java-based application, providing three main features:
+Cooja itself is a Java-based application, providing three main features:
 \begin{enumerate}
 \item a graphical user interface (GUI, based on Java's standard Swing toolkit)
 to design, run, and analyze WSN simulations;
 \item simulation of the radio medium underlying the wireless communications
 of sensor networks;
 \item an extensible framework, which allows integration of external tools
-to provide additional features to the COOJA application.
+to provide additional features to the Cooja application.
 \end{enumerate}
 
-This last feature is used to allow COOJA to actually emulate the various
+This last feature is used to allow Cooja to actually emulate the various
 motes constituting the WSNs. It indeed embeds and uses dedicated emulator
 programs that perform cycle-accurate emulation of the chips with which motes
 are built: microcontroller units (MCUs), radio transceivers, etc.
 
-This emulation mechanism is one of the main strong assets of COOJA:
+This emulation mechanism is one of the main strong assets of Cooja:
 thanks to it, very fine-grained, precise and low-level simulations
-can be performed; this is why COOJA has become a tool of choice especially
+can be performed; this is why Cooja has become a tool of choice especially
 for debugging and evaluating WSN-related software (which happens to be
 often based on Contiki OS).
 
-Current versions of COOJA make use of two different emulator software
+Current versions of Cooja make use of two different emulator software
 packages: Avrora~\cite{Avrora} for emulation of Atmel AVR-based devices,
 and MSPSim~\cite{MSPSim} for emulation of TI MSP430-based devices.
-(Also note that in the future, the structure of COOJA would allow it
+(Also note that in the future, the structure of Cooja would allow it
 to include more emulators, dedicated to other architectures: one might
 especially think to the ARM Cortex-M architecture which is more and
 more used in ``motes'' and other embedded devices).
 
 Of these two emulators, MSPSim is currently the most used in literature
-including COOJA-based simulations, since motes based on MSP430 MCUs are
+including Cooja-based simulations, since motes based on MSP430 MCUs are
 more commonly distributed and used: we can especially think to the pervasive
 TelosB/SkyMote family, or to Zolertia's Z1 platform.
 
 We searched the literature, but we found no article related to any reported
-inaccuracy in COOJA or MSPSim.
+inaccuracy in Cooja or MSPSim.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -238,7 +238,7 @@ SPI model, and thus obtained an additional setup for our tests.
 \medskip
 
 The results of the comparison between execution on simulated motes
-in COOJA/MSPSim and on physical hardware are shown in
+in Cooja/MSPSim and on physical hardware are shown in
 Table~\ref{TblTXPktLoadDelaysSkyTelosB} for SkyMote/TelsoB hardware,
 and in Table~\ref{TblTXPktLoadDelaysZ1} for Zolertia Z1 hardware.
 
@@ -449,7 +449,7 @@ OS (and even more when running RIOT OS) which is not a negligible fraction.
 
 \bigskip
 
-This just makes the time-related results obtained with COOJA/ MSPSim
+This just makes the time-related results obtained with Cooja/ MSPSim
 simulations unreliable for performance evaluation purposes, particularly
 on Zolertia Z1, but also on the very popular SkyMote/TelosB hardware platform.
 
@@ -462,7 +462,7 @@ a packet, especially when running an OS different from Contiki (see Table
 \ref{TblTXRelWeight} for detailed results).
 Such an inaccuracy in the evaluation of packet TX delay is obviously bound
 to have strong consequences on the reliability of performance evaluations
-made with COOJA/MSPSim simulations.
+made with Cooja/MSPSim simulations.
 
 \begin{table*}[htbp]
 \caption{Relative Weight of TX Buffer Loading in Packet Transmission Timings.}
@@ -526,7 +526,7 @@ Zolertia Z1       & RIOT OS & Large
 Moreover, since the problem seems to be caused by the emulation of
 MCUs by the MSPSim emulator, we expect the vast majority of the other
 MSP430-based motes and evaluation boards emulated by the Contiki 2.7
-(i.e.: latest release) version of COOJA/MSPSim framework to be also similarly
+(i.e.: latest release) version of Cooja/MSPSim framework to be also similarly
 impacted by this problem, at various levels.
 
 Consequently, we believe that users of such devices should perform their
@@ -549,7 +549,7 @@ present work at the following URL:
 \label{consequences}
 
 We looked in recent literature, and found many recent articles (that is:
-published in year 2014 or later) relying on COOJA simulations to perform,
+published in year 2014 or later) relying on Cooja simulations to perform,
 directly or indirectly, time-related performance evaluation of WSN projects
 based on 802.15.4 networking.
 
@@ -588,7 +588,7 @@ Some can even present alternate network stacks (\cite{TinySDN-2014}).
 
 \bigskip
 
-Such studies, which rely on COOJA/MSPSim emulation runs to evaluate
+Such studies, which rely on Cooja/MSPSim emulation runs to evaluate
 time-related performance on WSN, have a (potentially high) risk of
 suffering from inexact results due to the timing inaccuracy described
 hereabove, which may go from moderate up to critical bias.
@@ -616,7 +616,7 @@ consequently showed the area to investigate for fixing it.
 
 We briefly enumerated a list of many recently published articles in the
 WSN domain whose results are potentially negatively impacted by this problem,
-because they rely on COOJA/MSPSim simulations to evaluate their work.
+because they rely on Cooja/MSPSim simulations to evaluate their work.
 The validity of such publications may be put in jeopardy by the
 issue we describe here, especially when time-related results
 obtained by simulation are involved.
@@ -633,13 +633,13 @@ Of course, such hardware tests are much more difficult, long and
 costly to prepare, run and analyze.
 
 Note that many published articles in the domain of WSNs, including
-very recent publications, include simulations made with the COOJA/MSPSim
+very recent publications, include simulations made with the Cooja/MSPSim
 framework. This is clearly a testimony of the usefulness of the this
 software package. That's why fixing the problem we describe in the present
 paper by correcting MSPSim code as soon as possible is really important.
 
 Note also that while the issue described here can impair the use of
-COOJA/MSPSim as a performance evaluation tool, it does not affect its other
+Cooja/MSPSim as a performance evaluation tool, it does not affect its other
 applications, like the ability to develop and debug WSN-related software much
 more easily thanks to its emulation features.
 
