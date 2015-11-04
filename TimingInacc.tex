@@ -80,8 +80,9 @@ difficult.
 There are many of such simulation/emulation tools (like, for example,
 the OpenSim tool from the OpenWSN project~\cite{OpenWSN}). But currently,
 one of the most used---if not \emph{the} most used---simulation/emulation
-tool used in the WSN/IoT domain is the Cooja framework, which includes
-the MSPSim and Avrora software to perform cycle-exact emulation of ``motes''.
+tool used in the WSN/IoT domain is the Cooja framework~\cite{Cooja}, which
+includes the MSPSim and Avrora software to perform cycle-exact emulation
+of ``motes''.
 
 \medskip
 
@@ -104,20 +105,20 @@ the many publications making use of this framework.
 
 \bigskip
 
-In this paper, after the brief reminder about Cooja and MSPSim in the
+In this paper, after a brief reminder about Cooja and MSPSim in the
 following section~\ref{coojaMspsim}, our contributions firstly consist in
 describing, in section~\ref{newUses}, how the Cooja Framework is absolutely
 not limited to simulation of Contiki-based projects, but can---thanks to
 its emulation features---run any program built for one of the systems
-supported by its embedded emulators.
+supported by its embedded emulators. \\
 We then provide---in section~\ref{results}---in a detailed description
 of this timing inaccuracy problem, using a significant set of comparisons
 between simulations and experimentations on hardware; we then use
 these results to provide clues about the origin of this issue, and
-possible means to fix or avoid it.
+possible means to fix or avoid it. \\
 Then in section~\ref{consequences} we see this problem's consequences
 on current WSN/IoT-related literature, in terms of robustness and
-reliability of the articles relying on such simulations.
+reliability of the articles relying on such simulations. \\
 Finally, we draw in section~\ref{conclusion} some conclusions from all
 of these contributions as an end to the present article.
 
@@ -185,6 +186,81 @@ focus on the MSPSim emulator.
 
 \section{Using Cooja and MSPSim: Not Only for Contiki!}
 \label{newUses}
+
+While Cooja has been designed and built by the Contiki project to perform
+simulations of Contiki-based networks of motes, its structure is actually
+not tied at all to this operating system.
+
+As explained in the previous section~\ref{coojaMspsim}, the Cooja Java
+application itself only provides--- besides a GUI---the simulation of the
+radio medium, which by itself is, of course, totally independent of
+anything but signal transmission: It only cares about signal strength,
+propagation, diffusion and interferences. In other words, nothing related
+to the motes themselves, and \textit{a fortiori} the programs they run
+is of any slightest influence here.
+
+All the handling of the motes and the programs they run are handled by
+the emulators software embedded with Cooja, the latter only process the
+radio signals that the emulated devices emit and receive on the virtual
+radio medium, according to the way the said medium is simulated.
+That is: All that happens inside the motes themselves is actually
+ignored by Cooja itself, and is handled by the emulators.
+
+An emulator software being, by definition, a virtual instance of an
+hardware piece, it is supposed to execute---as much as possible---the
+same way that the hardware it emulates. Since motes like the TelosB/SkyMote
+or Zolertia Z1 are in no way tied to the Contiki OS (they are powered
+by general-purpose MCUs), nor are their emulators like MSPSim.
+
+Thus, like one can run many OSes like TinyOS, Contiki, RIOT OS, Nano-RK,
+etc. on these motes, so should we be able to run the same variety
+of operating systems on these motes' emulators.
+
+Like one will see in the next sections of the present paper, we were able
+to run RIOT OS applications using Cooja/MSPSim without problem. We are
+also convinced that running other OSes like, for example, Nano-RK or
+FreeRTOS under Cooja simulations would work as well, provided the emulated
+motes are supported by the versions of MSPSim and Avrora provided with
+Cooja.
+
+\medskip
+
+To run our RIOT OS applications under Cooja, we only had to perform one
+very simple trick: MSPSim expects to run executables whose name extension
+corresponds to the emulated platform; for example:
+``\texttt{executable.sky}'' for the SkyMote/TelosB family, or
+``\texttt{executable.z1}'' for the Zolertia Z1. The Contiki build system
+(\texttt{Makefiles}) is designed to give to the compiled executables
+such ad-hoc extensions automatically. RIOT OS build system, on the
+contrary, always produces executables named like ``\texttt{executable.elf}''
+(since the compilation toolchain, which happens to be the standard GNU
+toolchain for both OSes, produces executables in the well-known ELF
+executable format). To be able to run RIOT OS executables under Cooka
+simulations, we thus had to change their extension accordingly to the
+target platform to respect the Contiki build system naming scheme---Cooja
+will refuse to load a file as an executable without the appropriate
+extension. Once this renaming done, running RIOT OS compiled executables
+with Cooja simulations just works without any problem: Contiki build
+system, apart from the specific naming scheme, also produces standard
+ELF executables, built with the appropriate version of the GCC toolchain
+(i.e.: \texttt{gcc-msp430} or \texttt{gcc-avr}, according to the platform).
+Note that we were able to use the standard Debian-packaged version of
+these cross-compilers to create executables for both Contiki OS and
+RIOT OS without any problem.
+
+To sum it up, the Contiki build system produces standard ELF-formatted
+executables, adapted to the target MCU architecture. Any WSN OS producing
+such standard ELF executables should thus be able to be simulated/emulated
+as well under Cooja simulations. The only manipulation needed is a simple
+renaming trick as explained in the previous paragraph, so as to follow
+Cooja naming scheme linking executable name extension and platform
+(``\texttt{exe.z1}'' for the Zolertia Z1, ``\texttt{exe.sky}'' for
+SkyMote/TelosB, and so on).
+
+If one needs to know the extension that Cooja expects for a given hardware,
+one should simply compile a simple Contiki example (like the ever classical
+``\texttt{hello-world}'')  for the wanted hardware, and see what extension
+the produced exectable has.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -458,10 +534,10 @@ This gives us leads about the cause of this inaccuracy problem: since it
 is largely dependent on the hardware platform simulated \emph{and} the method
 used to write on the SPI bus, it is probably not (mainly) due to the
 emulation of the CC2420 transceiver chip, but rather to the estimation of
-the timing of SPI bus transfers, made at the MCU level. It is obvious that
-the emulation of the MSP430F2617 (the MCU powering the Z1 mote) just
-overestimates largely the SPI delays, while the emulation of the MSP430F1611
-(from SkyMote/TelosB) performs better on that aspect.
+the timing of SPI bus transfers, made at the MCU level. \\
+It is obvious that the emulation of the MSP430F2617 (the MCU powering the
+Z1 mote) just overestimates largely the SPI delays, while the emulation
+of the MSP430F1611 (from SkyMote/TelosB) performs better on that aspect.
 
 We can suppose that the MSPSim software has probably been finely tuned for
 MSP430F1611 emulation~--- especially for timing calibrations~---, while
@@ -570,7 +646,7 @@ own tests to evaluate the possible inaccuracy and its impact on their work.
 To help in that matter, we freely provide the programs we used to perform the
 present work at the following URL:
 
-\smallskip
+\medskip
 
 \begin{center}
 \texttt{\textbf{\small https://github.com/rousselk/tim-inacc-tst-prg}}
@@ -691,6 +767,7 @@ more easily thanks to its emulation features.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \balance
+
 \bibliographystyle{abbrv}
 \bibliography{TimingInacc}
 
