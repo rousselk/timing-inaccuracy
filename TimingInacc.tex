@@ -31,7 +31,6 @@
                {February 15--17, 2016, Graz, Austria.}
 \CopyrightYear{2015}
 
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%                               80 COLONNES                                %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -46,9 +45,10 @@
 The Cooja/MSPSim network simulation framework is widely used for developing
 and debugging, but also for performance evaluation of WSN projects.
 
-We discovered that Cooja is absolutely not limited to simulation of
-Contiki OS based systems and networks, and routinely used this simulation
-framework to perform experiments with another (RIOT) OS.
+We show in this paper that Cooja is not limited only to the simulation
+of the Contiki OS based systems and networks, but can also be extended 
+to perform simulation experiments of other OS based platforms, especially
+that with RIOT OS.
 
 Moreover, when performing our own simulations with Cooja and MSPSim,
 we observed timing inconsistencies with identical experimentations made
@@ -86,7 +86,8 @@ and thus testing such a lot of miniaturized devices may be more and more
 difficult.
 
 There are many of such simulation/emulation tools (like, for example,
-the OpenSim tool from the OpenWSN project~\cite{OpenWSN}). But currently,
+the OpenSim tool from the OpenWSN project~\cite{OpenWSN}, or
+TOSSIM~\cite{TOSSIM} from TinyOS~\cite{TinyOS}). But currently,
 one of the most used---if not \emph{the} most used---simulation/emulation
 tool used in the WSN/IoT domain is the Cooja framework~\cite{Cooja}, which
 includes the MSPSim and Avrora software to perform cycle-exact emulation
@@ -98,8 +99,8 @@ The present paper is based on the two following subjects~:
 \begin{enumerate}
 
 \item The ability, actually tested and used pervasively, to use Cooja
-to run programs that are absolutely not designed with, nor even related to,
-the Contiki operating system. Any program running on the microcontroller
+to run programs that are not designed with, nor even related to, the
+Contiki operating system. Any program running on the microcontroller
 (MCU) architectures supported by the embedded emulators of Cooja---MSPSim
 and Avrora---can be simulated (with the use of a trivial trick).
 
@@ -114,9 +115,9 @@ the many publications making use of this framework.
 \bigskip
 
 In this paper, after a brief reminder about Cooja and MSPSim in the
-following section~\ref{coojaMspsim}, our contributions firstly consist in
-describing, in section~\ref{newUses}, how the Cooja Framework is absolutely
-not limited to simulation of Contiki-based projects, but can---thanks to
+following section~\ref{coojaMspsim}, our contributions firstly consist
+in describing, in section~\ref{newUses}, how the Cooja Framework is not
+limited to simulation of Contiki-based projects, but can---thanks to
 its emulation features---run any program built for one of the systems
 supported by its embedded emulators. \\
 We then provide---in section~\ref{results}---in a detailed description
@@ -220,16 +221,16 @@ same way that the hardware it emulates. Since motes like the TelosB/SkyMote
 or Zolertia Z1 are in no way tied to the Contiki OS (they are powered
 by general-purpose MCUs), nor are their emulators like MSPSim.
 
-Thus, like one can run many OSes like TinyOS, Contiki, RIOT OS, Nano-RK,
-etc. on these motes, so should we be able to run the same variety
-of operating systems on these motes' emulators.
+Thus, like one can run many OSes like TinyOS, Contiki, RIOT OS~\cite{RIOT},
+Nano-RK~\cite{NanoRK}, etc. on these motes, so should we be able to run
+the same variety of operating systems on these motes' emulators.
 
-Like one will see in the next sections of the present paper, we were able
-to run RIOT OS applications using Cooja/MSPSim without problem. We are
-also convinced that running other OSes like, for example, Nano-RK or
-FreeRTOS under Cooja simulations would work as well, provided the emulated
-motes are supported by the versions of MSPSim and Avrora provided with
-Cooja.
+Like one will see in the next sections of the present paper, we were
+able to run RIOT OS applications using Cooja/MSPSim without problem.
+We are also convinced that running other OSes like, for example,
+Nano-RK under Cooja simulations would work as well, provided
+the emulated motes are supported by the versionsof MSPSim
+and Avrora provided with Cooja.
 
 \smallskip
 
@@ -782,4 +783,8 @@ more easily thanks to its emulation features.
 \bibliography{TimingInacc}
 
 \end{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%                               80 COLONNES                                %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
