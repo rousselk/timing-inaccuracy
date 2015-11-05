@@ -3,6 +3,7 @@
 \usepackage[T1]{fontenc}
 \usepackage{balance}
 
+
 \numberofauthors{3}
 \author{
 \alignauthor K\'evin Roussel \\
@@ -21,6 +22,7 @@
         \affaddr{54600 Villers-l\`es-Nancy, France}
        \email{olivier.zendra@inria.fr}
 }
+
 
 \title{Using Cooja for WSN Simulations: Some New Uses and Limits}
 
@@ -44,15 +46,21 @@
 The Cooja/MSPSim network simulation framework is widely used for developing
 and debugging, but also for performance evaluation of WSN projects.
 
-When performing our own simulations with Cooja and MSPSim, we observed timing
-inconsistencies with identical experimentations made on actual hardware.
-Such inaccuracies clearly impair the use of the Cooja/MSPSim framework as
-a performance evaluation tool, at least for time-related performance
-parameters.
+We discovered that Cooja is absolutely not limited to simulation of
+Contiki OS based systems and networks, and routinely used this simulation
+framework to perform experiments with another (RIOT) OS.
 
-We will present in this paper, as our contributions, the detailed results of
-our investigations on, as well as the consequences of this issue,
-and give possible leads to fix or avoid it.
+Moreover, when performing our own simulations with Cooja and MSPSim,
+we observed timing inconsistencies with identical experimentations made
+on actual hardware. Such inaccuracies clearly impair the use of the
+Cooja/MSPSim framework as a performance evaluation tool, at least
+for time-related performance parameters.
+
+We will present in this paper, as our contributions: On the one hand,
+how to use Cooja with projects not related to Contiki OS;
+On the other hand, the detailed results of our investigations on the
+inaccuracy problems, as well as the consequences of this issue, and give
+possible leads to fix or avoid it.
 \end{abstract}
 
 
@@ -223,7 +231,7 @@ FreeRTOS under Cooja simulations would work as well, provided the emulated
 motes are supported by the versions of MSPSim and Avrora provided with
 Cooja.
 
-\medskip
+\smallskip
 
 To run our RIOT OS applications under Cooja, we only had to perform one
 very simple trick: MSPSim expects to run executables whose name extension
@@ -534,7 +542,7 @@ This gives us leads about the cause of this inaccuracy problem: since it
 is largely dependent on the hardware platform simulated \emph{and} the method
 used to write on the SPI bus, it is probably not (mainly) due to the
 emulation of the CC2420 transceiver chip, but rather to the estimation of
-the timing of SPI bus transfers, made at the MCU level. \\
+the timing of SPI bus transfers, made at the MCU level.
 It is obvious that the emulation of the MSP430F2617 (the MCU powering the
 Z1 mote) just overestimates largely the SPI delays, while the emulation
 of the MSP430F1611 (from SkyMote/TelosB) performs better on that aspect.
@@ -665,6 +673,8 @@ published in year 2014 or later) relying on Cooja simulations to perform,
 directly or indirectly, time-related performance evaluation of WSN projects
 based on 802.15.4 networking.
 
+\medskip
+
 Among them, we can see that most of these papers use virtual SkyMote/TelosB
 nodes like
 \cite{Constrain-Routing-Trees-2014},
@@ -678,7 +688,7 @@ while some other use different, specific MSP430-based motes
 \cite{Lightweight-Multicast-Forwarding-2014}) whose sensibility
 to the present inaccuracy problem is unknown to us.
 
-\smallskip
+\medskip
 
 We also saw one paper that relies on both simulations and experimental
 results for timing-related performance evaluations: we especially found
@@ -686,7 +696,7 @@ results for timing-related performance evaluations: we especially found
 MATLAB-produced results. We expect such articles, (much) less common,
 to be less sensible to simulation inaccuracies.
 
-\smallskip
+\medskip
 
 Almost all of these papers present work related to higher layers of
 WSN network stacks, especially routing protocols (like
