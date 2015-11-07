@@ -105,14 +105,15 @@ Contiki operating system. Any program running on the microcontroller
 and Avrora---can be simulated (with the use of a trivial trick).
 
 \item The result inaccuracies we discovered while using Cooja simulations
-for testing our own WSN-based projects. Since Cooja is widely used,
-especially for evaluating performances of WSN or IoT-based projects,
+for testing our own WSN-based projects (note that we used the version of
+Cooja provided with Contiki release 2.7). Since Cooja is widely used,
+ especially for evaluating performances of WSN or IoT-based projects,
 such inaccuracies may have strong consequences on the validity of
 the many publications making use of this framework.
 
 \end{enumerate}
 
-\bigskip
+\medskip
 
 In this paper, after a brief reminder about Cooja and MSPSim in the
 following section~\ref{coojaMspsim}, our contributions firstly consist
@@ -357,9 +358,10 @@ SPI model, and thus obtained an additional setup for our tests.
 \medskip
 
 The results of the comparison between execution on simulated motes
-in Cooja/MSPSim and on physical hardware are shown in
-Table~\ref{TblTXPktLoadDelaysSkyTelosB} for SkyMote/TelsoB hardware,
-and in Table~\ref{TblTXPktLoadDelaysZ1} for Zolertia Z1 hardware.
+in Cooja/MSPSim (in the version from Contiki release 2.7) and on physical
+hardware are shown in Table~\ref{TblTXPktLoadDelaysSkyTelosB} for
+SkyMote/TelsoB hardware, and in Table~\ref{TblTXPktLoadDelaysZ1} for
+Zolertia Z1 hardware.
 
 Note that in both tables, delay values are given in ``ticks'' of timers
 incrementing at a rate of 32,768~Hz. The unit is thus a fixed period of
@@ -570,7 +572,7 @@ OS (and even more when running RIOT OS) which is not a negligible fraction.
 
 \bigskip
 
-This just makes the time-related results obtained with Cooja/ MSPSim
+This just makes the time-related results obtained with Cooja/MSPSim
 simulations unreliable for performance evaluation purposes, particularly
 on Zolertia Z1, but also on the very popular SkyMote/TelosB hardware platform.
 
@@ -647,8 +649,9 @@ Zolertia Z1       & RIOT OS & Large
 Moreover, since the problem seems to be caused by the emulation of
 MCUs by the MSPSim emulator, we expect the vast majority of the other
 MSP430-based motes and evaluation boards emulated by the Contiki 2.7
-(i.e.: latest release) version of Cooja/MSPSim framework to be also similarly
-impacted by this problem, at various levels.
+version of Cooja/MSPSim framework (i.e.: latest release at the moment
+we are writing this paper) to be also similarly impacted by this problem,
+at various levels.
 
 Consequently, we believe that users of such devices should perform their
 own tests to evaluate the possible inaccuracy and its impact on their work.
@@ -709,7 +712,7 @@ or application-level protocols (e.g.: \cite{DINAS-2014},
 \cite{Visual-Sensor-Networks-2014}, and \cite{Key-Mgmt-2015}).
 Some can even present alternate network stacks (\cite{TinySDN-2014}).
 
-\bigskip
+\medskip
 
 Such studies, which rely on Cooja/MSPSim emulation runs to evaluate
 time-related performance on WSN, have a (potentially high) risk of
@@ -725,16 +728,22 @@ the discussions and conclusions of these papers in jeopardy.
 \label{conclusion}
 
 In the present article, we provided the following contributions:
+
+\medskip
+
 \begin{itemize}
 \item We proved that the Cooja Framework is in no way limited to simulations
 of systems running Contiki OS, but can---thanks to the use of embedded
 software to perform cycle-exact emulation of devices--- run any program
 designed for one of the emulated architectures, whatever the OS used
 (or not).
-\item We clearly showed that MSPSim emulation suffers from a serious timing
+\ \\
+\item We clearly showed that MSPSim emulation (at least for the version
+provided with Contiki release 2.7) suffers from a serious timing
 inaccuracy issue concerning SPI bus access, which especially impacts
 communication between MCUs and radio transceivers---and thus, wireless
 network operation---on WSN motes;\\
+\ \\
 we described the extent of the problem with detailed experimentation
 results---extent which happens to be serious, especially for the emulation
 of the Zolertia Z1 hardware platform;\\
@@ -767,7 +776,7 @@ framework. This is clearly a testimony of the usefulness of the this
 software package. That's why fixing the problem we describe in the present
 paper by correcting MSPSim code as soon as possible is really important.
 
-\bigskip
+\medskip
 
 Note also that while the issue described here can impair the use of
 Cooja/MSPSim as a performance evaluation tool, it does not affect its other
@@ -787,4 +796,5 @@ more easily thanks to its emulation features.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%                               80 COLONNES                                %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 
