@@ -91,13 +91,21 @@
 \newif\ifpreprint
 \preprintfalse
 \DeclareOption{preprint}{\preprinttrue}
+
 \newif\ifnocopyrightspace
 \nocopyrightspacefalse
 \DeclareOption{nocopyrightspace}{\nocopyrightspacetrue}
+
+\newif\ifemptycopyrightspace
+\emptycopyrightspacefalse
+\DeclareOption{emptycopyrightspace}{\emptycopyrightspacetrue}
+
 \PassOptionsToClass{twocolumn}{article}
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}}
 \ProcessOptions\relax % RE
 \LoadClass{article}
+
+
 
 \def\tableofcontents{\@latexerr{\tableofcontents: Tables of contents are not
   allowed in the `ewsn-proc' document style.}\@eha}
@@ -367,7 +375,7 @@
  \let\maketitle\relax
  \let\@maketitle\relax
  \gdef\@thanks{}\gdef\@author{}\gdef\@title{}\gdef\@subtitle{}\let\thanks\relax
- \ifnocopyrightspace\else\@copyrightspace\fi
+ \ifnocopyrightspace\else\@copyrightspace\fi 
  }
 
 % make aubox hsize/number of authors up to 3, less gutter
@@ -553,6 +561,7 @@
     \end{picture}
   \end{center}
   \end@float}
+
 \def\@toappear{} % Default setting blank - commands below change this.
 \long\def\toappear#1{\def\@toappear{\parbox[b]{20pc}{\baselineskip 9pt#1}}}
 \def\toappearbox#1{\def\@toappear{\raisebox{5pt}{\framebox[20pc]{\parbox[b]{19pc}{#1}}}}}
@@ -568,6 +577,7 @@
 \def\@crdata{}
 \def\permission#1{\gdef\@permission{#1}}
 
+%\abstracttrue
 \ifabstract
 \def\@permission{Copyright is held by the author/owner(s).}
 \else
@@ -578,7 +588,8 @@
   citation on the first page. To copy otherwise, to republish, to
   post on servers or to redistribute to lists, requires prior specific
   permission and/or a fee.}
-\fi
+\fi  
+
 \def\crdata#1{\gdef\@crdata{#1}}
 \def\@crdata{}
 
@@ -590,8 +601,16 @@
   \fi
   }
 
+%\emptycopyrightspacetrue
+%\emptycopyrightspacefalse
+\ifemptycopyrightspace
+\else
 \toappear{\scriptsize\@permission\\[-0.5em]\par
 \textsl{\@conferencename} \@conferenceinfo\par\@copyrightinfo}
+\fi
+
+
+
 
 % Theorems
 % ========
