@@ -1,8 +1,20 @@
-\documentclass[10pt]{ewsn-proc}
+\documentclass[10pt,emptycopyrightspace]{ewsn-proc}
 
-\usepackage[T1]{fontenc}
 \usepackage{balance}
 
+%% This should be set up correctly by the 'ewsn-proc' class,
+%% but it doesn't seem to work for me (is my LaTeX installation damaged?)
+\usepackage[paperwidth=8.5in,paperheight=11in]{geometry}
+
+\setlength{\topmargin}{0pt}
+\addtolength{\topmargin}{-\headsep}
+\addtolength{\topmargin}{-\headheight}
+\setlength{\evensidemargin}{-0.25in}
+\setlength{\oddsidemargin}{-0.25in}
+\setlength{\textheight}{9in}
+\setlength{\textwidth}{7in}
+\setlength{\columnsep}{.25in}
+%% End of pagination commands
 
 \numberofauthors{3}
 \author{
@@ -27,9 +39,9 @@
 \title{Using Cooja for WSN Simulations: Some New Uses and Limits}
 
 % Short paper for the NextMote workshop
-\conferenceinfo{EWSN'16---NextMote Workshop}
-               {February 15--17, 2016, Graz, Austria.}
-\CopyrightYear{2015}
+%\conferenceinfo{EWSN'16---NextMote Workshop}
+%               {February 15--17, 2016, Graz, Austria.}
+%\CopyrightYear{2015}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%                               80 COLONNES                                %%%
@@ -63,6 +75,7 @@ inaccuracy problems, as well as the consequences of this issue, and give
 possible leads to fix or avoid it.
 \end{abstract}
 
+\medskip
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -132,6 +145,7 @@ reliability of the articles relying on such simulations. \\
 Finally, we draw in section~\ref{conclusion} some conclusions from all
 of these contributions as an end to the present article.
 
+\medskip
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -258,6 +272,8 @@ Note that we were able to use the standard Debian-packaged version of
 these cross-compilers to create executables for both Contiki OS and
 RIOT OS without any problem.
 
+\medskip
+
 To sum it up, the Contiki build system produces standard ELF-formatted
 executables, adapted to the target MCU architecture. Any WSN OS producing
 such standard ELF executables should thus be able to be simulated/emulated
@@ -272,6 +288,7 @@ one should simply compile a simple Contiki example (like the ever classical
 ``\texttt{hello-world}'')  for the wanted hardware, and see what extension
 the produced exectable has.
 
+\bigskip
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -305,9 +322,7 @@ data packets of various sizes, chosen amongst:
 \item \emph{large} size, with a payload of 110 bytes (that is:
       near the maximum size of 127 bytes for IEEE 802.15.4 packets).
 \end{itemize}
-
-\medskip
-
+\smallskip
 The actually transmitted packet have 11 bytes of overhead (headers and
 checksum) beyond their payload.
 
@@ -325,9 +340,7 @@ It has been compiled for, and run on the following hardware platforms:
 \item the well-known SkyMote/TelosB mote, powered by a MSP430F1611 MCU;
 \item the more recent Zolertia Z1 mote powered by a MSP430 F2617 MCU.
 \end{itemize}
-
 \smallskip
-
 Both devices have the same CC2420 radio transceiver.
 
 \medskip
@@ -510,7 +523,7 @@ Pkt. Size & \multicolumn{2}{c|}{Cooja Simulation (ticks)}
 \end{table*}
 
 
-\medskip
+\bigskip
 
 The results with ``standard'' setups show that:
 \begin{itemize}
@@ -528,7 +541,7 @@ thus hard to estimate and correct without a comparison with experimentation
 on actual hardware.
 \end{itemize}
 
-\bigskip
+\medskip
 
 With the modified RIOT OS setup (``fast SPI''), we can see that:
 \begin{itemize}
@@ -554,7 +567,7 @@ We can suppose that the MSPSim software has probably been finely tuned for
 MSP430F1611 emulation~--- especially for timing calibrations~---, while
 MSP430F2617 emulation has been less thoroughly tested.
 
-\medskip
+\bigskip
 
 We thus see that whatever the software environment used, we can make the
 following observations about the inaccuracy in timing for the TX buffer
@@ -569,10 +582,8 @@ senses: under-estimation or over-estimation of the actual delay on hardware.
 Moreover, this inaccuracy can go up to 15\% of the real value with Contiki
 OS (and even more when running RIOT OS) which is not a negligible fraction.
 \end{itemize}
-
-\bigskip
-
-This just makes the time-related results obtained with Cooja/MSPSim
+\smallskip
+This just makes the time-related results obtained with COOJA/ MSPSim
 simulations unreliable for performance evaluation purposes, particularly
 on Zolertia Z1, but also on the very popular SkyMote/TelosB hardware platform.
 
@@ -664,8 +675,7 @@ present work at the following URL:
 \texttt{\textbf{\small https://github.com/rousselk/tim-inacc-tst-prg}}
 \end{center}
 
-\bigskip
-
+\medskip
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -692,7 +702,7 @@ while some other use different, specific MSP430-based motes
 \cite{Lightweight-Multicast-Forwarding-2014}) whose sensibility
 to the present inaccuracy problem is unknown to us.
 
-\medskip
+\smallskip
 
 We also saw one paper that relies on both simulations and experimental
 results for timing-related performance evaluations: we especially found
@@ -700,7 +710,7 @@ results for timing-related performance evaluations: we especially found
 MATLAB-produced results. We expect such articles, (much) less common,
 to be less sensible to simulation inaccuracies.
 
-\medskip
+\smallskip
 
 Almost all of these papers present work related to higher layers of
 WSN network stacks, especially routing protocols (like
@@ -712,7 +722,7 @@ or application-level protocols (e.g.: \cite{DINAS-2014},
 \cite{Visual-Sensor-Networks-2014}, and \cite{Key-Mgmt-2015}).
 Some can even present alternate network stacks (\cite{TinySDN-2014}).
 
-\medskip
+\bigskip
 
 Such studies, which rely on Cooja/MSPSim emulation runs to evaluate
 time-related performance on WSN, have a (potentially high) risk of
@@ -721,6 +731,7 @@ hereabove, which may go from moderate up to critical bias.
 in the latter case, the issue obviously goes as far as putting
 the discussions and conclusions of these papers in jeopardy.
 
+\newpage
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -757,7 +768,7 @@ issue we describe here, especially when time-related results
 obtained by simulation are involved.
 \end{itemize}
 
-\medskip
+\bigskip
 
 Until a fix is made and published to correct this timing inaccuracy
 in the MSPSim emulator, we believe the only way to get robust and reliable
@@ -783,6 +794,7 @@ Cooja/MSPSim as a performance evaluation tool, it does not affect its other
 applications, like the ability to develop and debug WSN-related software much
 more easily thanks to its emulation features.
 
+\bigskip
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -796,5 +808,4 @@ more easily thanks to its emulation features.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%                               80 COLONNES                                %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 
