@@ -1,6 +1,7 @@
 \documentclass[10pt,emptycopyrightspace]{ewsn-proc}
 
 \usepackage{balance}
+\usepackage{enumitem}
 
 %% This should be set up correctly by the 'ewsn-proc' class,
 %% but it doesn't seem to work for me (is my LaTeX installation damaged?)
@@ -38,10 +39,6 @@
 
 \title{Using Cooja for WSN Simulations: Some New Uses and Limits}
 
-% Short paper for the NextMote workshop
-%\conferenceinfo{EWSN'16---NextMote Workshop}
-%               {February 15--17, 2016, Graz, Austria.}
-%\CopyrightYear{2015}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%                               80 COLONNES                                %%%
@@ -554,15 +551,20 @@ to the obtention of quite accurate results (2\% or less of inaccuracy).
 
 \medskip
 
-This gives us leads about the cause of this inaccuracy problem: since it
-is largely dependent on the hardware platform simulated \emph{and} the method
-used to write on the SPI bus, it is probably not (mainly) due to the
-emulation of the CC2420 transceiver chip, but rather to the estimation of
-the timing of SPI bus transfers, made at the MCU level.
-It is obvious that the emulation of the MSP430F2617 (the MCU powering the
-Z1 mote) just overestimates largely the SPI delays, while the emulation
-of the MSP430F1611 (from SkyMote/TelosB) performs better on that aspect.
+This gives us leads about the cause of this inaccuracy problem: since
+it is largely dependent on the hardware platform simulated \emph{and} the
+method used to write on the SPI bus, \emph{it is probably not (mainly) due
+to the emulation of the CC2420 transceiver chip, but rather to the
+estimation of the timing of SPI bus transfers, made at the MCU level}.
 
+In that case, it is then obvious that:
+\begin{enumerate}[label=\textit{\alph*}.\rbrack]
+\item the emulation of the MSP430F2617 (the MCU powering the Z1 mote)
+just overestimates largely the SPI delays,
+\item while the emulation of the MSP430F1611 (from SkyMote/TelosB) performs
+better on that aspect.
+\end{enumerate}
+\smallskip
 We can suppose that the MSPSim software has probably been finely tuned for
 MSP430F1611 emulation~--- especially for timing calibrations~---, while
 MSP430F2617 emulation has been less thoroughly tested.
@@ -805,7 +807,9 @@ more easily thanks to its emulation features.
 
 \end{document}
 
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%                               80 COLONNES                                %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 
