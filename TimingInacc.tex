@@ -3,6 +3,7 @@
 \usepackage{balance}
 \usepackage{enumitem}
 
+
 %% This should be set up correctly by the 'ewsn-proc' class,
 %% but it doesn't seem to work for me (is my LaTeX installation damaged?)
 \usepackage[paperwidth=8.5in,paperheight=11in]{geometry}
@@ -16,6 +17,7 @@
 \setlength{\textwidth}{7in}
 \setlength{\columnsep}{.25in}
 %% End of pagination commands
+
 
 \numberofauthors{3}
 \author{
@@ -202,6 +204,7 @@ TelosB/SkyMote family, or to Zolertia's Z1 platform. Since the latter
 devices are the hardware we use, the present paper will principally
 focus on the MSPSim emulator.
 
+\medskip
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -285,7 +288,7 @@ one should simply compile a simple Contiki example (like the ever classical
 ``\texttt{hello-world}'')  for the wanted hardware, and see what extension
 the produced exectable has.
 
-\bigskip
+\medskip
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -733,7 +736,13 @@ hereabove, which may go from moderate up to critical bias.
 in the latter case, the issue obviously goes as far as putting
 the discussions and conclusions of these papers in jeopardy.
 
-\newpage
+Due to the paper size and time constraints, we won't go into further details
+about potential consequences here. A future work shall be undertaken to
+go deeper into that matter, as well as to check for potential changes about
+these problems in the newly released version of Cooja provided with Contiki
+version 3.0.
+
+\medskip
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -742,24 +751,20 @@ the discussions and conclusions of these papers in jeopardy.
 
 In the present article, we provided the following contributions:
 
-\medskip
-
 \begin{itemize}
 \item We proved that the Cooja Framework is in no way limited to simulations
 of systems running Contiki OS, but can---thanks to the use of embedded
 software to perform cycle-exact emulation of devices--- run any program
 designed for one of the emulated architectures, whatever the OS used
 (or not).
-\ \\
 \item We clearly showed that MSPSim emulation (at least for the version
 provided with Contiki release 2.7) suffers from a serious timing
 inaccuracy issue concerning SPI bus access, which especially impacts
 communication between MCUs and radio transceivers---and thus, wireless
-network operation---on WSN motes;\\
-\ \\
+network operation---on WSN motes; \\
 we described the extent of the problem with detailed experimentation
 results---extent which happens to be serious, especially for the emulation
-of the Zolertia Z1 hardware platform;\\
+of the Zolertia Z1 hardware platform; \\
 we provided serious clues about the cause of the issue, and
 consequently showed the area to investigate for fixing it.
 \item We briefly enumerated a list of many recently published articles in the
