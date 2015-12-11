@@ -1,3 +1,4 @@
 # timing-inaccuracy
 
-Dépôt GitHub pour un futur article court.
+Dépôt GitHub du source LaTeX d'un article court pour le workshop NextMote d'EWSN 2016.
+
