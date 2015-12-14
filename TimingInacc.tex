@@ -42,6 +42,7 @@
 \title{Using Cooja for WSN Simulations: Some New Uses and Limits}
 
 
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%                               80 COLONNES                                %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -73,6 +74,21 @@ On the other hand, the detailed results of our investigations on the
 inaccuracy problems, as well as the consequences of this issue, and give
 possible leads to fix or avoid it.
 \end{abstract}
+
+\medskip
+
+\category{B4.4}{Performance Analysis and Design Aids}{Simulation}
+\category{B8.m}{Performance and Reliability}{Miscellaneous}
+               [Inaccuracies of timings/delays in simulations]
+\category{C2.1}{Network Architecture and Design}{Wireless Communication}
+               [Wireless Sensor Networks]
+\category{D4.m}{Operating Systems}{Miscellaneous}
+               [WSN-dedicated OS and simulators/emulators]
+
+\terms{TODO!!}
+
+\keywords{Cooja, MSPSim, inaccuracies, uses, limits, reliability,
+          validation, WSN, OS}
 
 \medskip
 
@@ -572,7 +588,7 @@ We can guess that the MSPSim software has probably been finely tuned for
 MSP430F1611 emulation~--- especially for timing calibrations~---, while
 MSP430F2617 emulation has been less thoroughly tested.
 
-\bigskip
+\medskip
 
 We thus see that whatever the software environment used, we can make the
 following observations about the inaccuracy in timing for the TX buffer
@@ -674,7 +690,7 @@ own tests to evaluate the possible inaccuracy and its impact on their work.
 To help in that matter, we freely provide the programs we used to perform the
 present work at the following URL:
 
-\medskip
+\smallskip
 
 \begin{center}
 \texttt{\textbf{\small https://github.com/rousselk/tim-inacc-tst-prg}}
@@ -801,7 +817,7 @@ Cooja/MSPSim as a performance evaluation tool, it does not affect its other
 applications, like the ability to develop and debug WSN-related software much
 more easily thanks to its emulation features.
 
-\bigskip
+\medskip
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -816,5 +832,6 @@ more easily thanks to its emulation features.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%                               80 COLONNES                                %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 
 
