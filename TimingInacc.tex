@@ -563,12 +563,12 @@ estimation of the timing of SPI bus transfers, made at the MCU level}.
 In that case, it is then obvious that:
 \begin{enumerate}[label=\textit{\alph*}.\rbrack]
 \item the emulation of the MSP430F2617 (the MCU powering the Z1 mote)
-just overestimates largely the SPI delays,
-\item while the emulation of the MSP430F1611 (from SkyMote/TelosB) performs
+just overestimates largely the SPI delays~;
+\item the emulation of the MSP430F1611 (from SkyMote/TelosB) performs
 better on that aspect.
 \end{enumerate}
 \smallskip
-We can suppose that the MSPSim software has probably been finely tuned for
+We can guess that the MSPSim software has probably been finely tuned for
 MSP430F1611 emulation~--- especially for timing calibrations~---, while
 MSP430F2617 emulation has been less thoroughly tested.
 
@@ -736,8 +736,8 @@ hereabove, which may go from moderate up to critical bias.
 in the latter case, the issue obviously goes as far as putting
 the discussions and conclusions of these papers in jeopardy.
 
-Due to the paper size and time constraints, we won't go into further details
-about potential consequences here. A future work shall be undertaken to
+Due to the paper size constraints, we can't go into further details about
+actual consequences on previous works. Future work should be undertaken to
 go deeper into that matter, as well as to check for potential changes about
 these problems in the newly released version of Cooja provided with Contiki
 version 3.0.
